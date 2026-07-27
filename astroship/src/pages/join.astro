@@ -2,12 +2,12 @@
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
-import PricingCard from "@components/pricing.astro";
+import PricingCard from "@components/join.astro";
 
-const pricing = [
+const join = [
   {
     name: "Personal",
-    price: "Free",
+    join: "Free",
     popular: false,
     features: [
       "Lifetime free",
@@ -24,7 +24,7 @@ const pricing = [
   },
   {
     name: "Startup",
-    price: {
+    join: {
       monthly: "$19",
       annual: "$16",
       discount: "10%",
@@ -46,7 +46,7 @@ const pricing = [
   },
   {
     name: "Enterprise",
-    price: "Custom",
+    join: "Custom",
     popular: false,
     features: [
       "All Pro Features",
@@ -74,7 +74,7 @@ const pricing = [
     </Sectionhead>
 
     <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-screen-lg mt-12">
-      {pricing.map((item) => <PricingCard plan={item} />)}
+      {join.map((item) => <PricingCard plan={item} />)}
     </div>
   </Container>
 </Layout>
