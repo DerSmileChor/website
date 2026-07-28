@@ -1,0 +1,481 @@
+---
+import { getCollection } from "astro:content";
+import { Picture } from "astro:assets";
+
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import Sectionhead from "@components/sectionhead.astro";
+
+/*
+ * Create paginated performance archive pages.
+ *
+ * Page 1: /performance/
+ * Page 2: /performance/2/
+ * Page 3: /performance/3/
+ */
+export async function getStaticPaths({ paginate }) {
+  const performances = await getCollection(
+    "performance",
+    ({ data }) => {
+      /*
+       * During development, this displays every entry that is not a draft.
+       *
+       * To hide future performances later, change this to:
+       *
+       * return !data.draft && data.publishDate < new Date();
+       */
+      return !data.draft;
+    },
+  );
+
+  /*
+   * Newest performances appear first.
+   */
+  performances.sort((a, b) => {
+    return (
+      b.data.publishDate.valueOf() -
+      a.data.publishDate.valueOf()
+    );
+  });
+
+  /*
+   * Display three performances on each page.
+   */
+  return paginate(performances, {
+    pageSize: 3,
+  });
+}
+
+const { page } = Astro.props;
+---
+
+<Layout title="Performances">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Performances</Fragment>
+
+      <Fragment slot="desc">
+        Der Smile Chor puts on a summer and winter performance every year.
+        <br />
+        Explore photographs from our past performances below.
+      </Fragment>
+    </Sectionhead>
+
+    <main class="mt-16">
+<ul
+  data-performance-row
+  class="
+    flex snap-x snap-mandatory gap-6
+    overflow-x-auto overscroll-x-contain
+    px-[8vw] pb-8 scroll-smooth
+    md:px-[12vw]
+    lg:px-[18vw]
+  "
+>
+          {
+    page.data.map((performance) => {
+      const photos = [
+        performance.data.image,
+        ...(performance.data.gallery ?? []),
+      ];
+
+      return (
+<li
+  data-performance-card
+  class="
+  w-[78vw] shrink-0 snap-center
+    sm:w-[68vw]
+    md:w-[58vw]
+    lg:w-[50vw]
+    xl:w-[44vw]
+  "
+>
+          
+        <article
+            data-embedded-gallery
+            tabindex="0"
+            class="overflow-hidden rounded-2xl border border-indigo-100 bg-white/70 shadow-sm outline-none transition focus-within:ring-2 focus-within:ring-indigo-400 focus:ring-2 focus:ring-indigo-400"
+            aria-label={`Photo gallery for ${performance.data.title}`}
+          >
+
+
+  <!-- Large slideshow image -->
+  <div class="relative bg-black">
+    {
+      photos.map((photo, index) => (
+        <figure
+          data-slide
+          class:list={[
+            "relative",
+            { hidden: index !== 0 },
+          ]}
+        >
+          <Picture
+            src={photo.src}
+            alt={photo.alt}
+            widths={[600, 900, 1200, 1600]}
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            width={1600}
+            height={1000}
+            loading={index === 0 ? "eager" : "lazy"}
+            class="aspect-[16/10] w-full object-contain"
+          />
+
+          {photo.caption && (
+            <figcaption class="absolute inset-x-0 bottom-0 bg-black/65 px-4 py-3 text-center text-sm text-white">
+              {photo.caption}
+            </figcaption>
+          )}
+        </figure>
+      ))
+    }
+
+    <!-- Previous and next arrows -->
+    {
+      photos.length > 1 && (
+        <>
+          <button
+            type="button"
+            data-previous-slide
+            class="absolute left-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-3xl text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-white"
+            aria-label={`Previous photo in ${performance.data.title}`}
+          >
+            <span aria-hidden="true">‹</span>
+          </button>
+
+          <button
+            type="button"
+            data-next-slide
+            class="absolute right-3 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-black/60 text-3xl text-white transition hover:bg-black/85 focus:outline-none focus:ring-2 focus:ring-white"
+            aria-label={`Next photo in ${performance.data.title}`}
+          >
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <div class="absolute right-3 top-3 rounded-full bg-black/65 px-3 py-1 text-sm text-white">
+            <span data-current-number>1</span>
+            <span aria-hidden="true"> / </span>
+            <span>{photos.length}</span>
+          </div>
+        </>
+      )
+    }
+  </div>
+
+  <!-- Performance title and information -->
+  <header class="border-b border-indigo-100 bg-zinc-50 p-6 sm:p-8">
+    <p class="text-sm font-medium uppercase tracking-wide text-indigo-600">
+      {performance.data.category}
+    </p>
+
+    <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-800">
+      {performance.data.title}
+    </h2>
+
+    <p class="mt-3 text-sm text-slate-500">
+      {performance.data.author}
+
+      <span class="mx-2" aria-hidden="true">
+        ·
+      </span>
+
+      <time datetime={performance.data.publishDate.toISOString()}>
+        {
+          performance.data.publishDate.toLocaleDateString("en-GB", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          })
+        }
+      </time>
+    </p>
+
+    {performance.data.snippet && (
+      <p class="mt-5 max-w-3xl leading-7 text-slate-600">
+        {performance.data.snippet}
+      </p>
+    )}
+  </header>
+  <!-- Thumbnail strip -->
+  {
+    photos.length > 1 && (
+      <div class="bg-indigo-50/60 px-4 py-4">
+        <div
+          class="flex gap-3 overflow-x-auto pb-1"
+          aria-label={`Choose a photo from ${performance.data.title}`}
+        >
+          {photos.map((photo, index) => (
+            <button
+              type="button"
+              data-thumbnail
+              data-slide-number={index}
+              class:list={[
+                "shrink-0 rounded-lg opacity-60 transition hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-indigo-500",
+                {
+                  "opacity-100 ring-2 ring-indigo-500":
+                    index === 0,
+                },
+              ]}
+              aria-label={`Show photo ${index + 1} of ${photos.length}`}
+              aria-current={index === 0 ? "true" : "false"}
+            >
+              <Picture
+                src={photo.src}
+                alt=""
+                width={160}
+                height={100}
+                loading="lazy"
+                class="h-20 w-28 rounded-lg object-cover sm:h-24 sm:w-36"
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+</article>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <!-- Pagination -->
+      {
+        page.lastPage > 1 && (
+          <nav
+            class="mx-auto mt-20 grid max-w-5xl grid-cols-3 items-center gap-3 border-t border-indigo-100 pt-8"
+            aria-label="Performance archive pages"
+          >
+            <div>
+              {page.url.prev && (
+                <a
+                  href={page.url.prev}
+                  class="inline-flex items-center rounded-lg border border-indigo-200 px-4 py-2 font-medium text-indigo-700 transition hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <span aria-hidden="true">←</span>
+                  <span class="ml-2 hidden sm:inline">
+                    Newer performances
+                  </span>
+                  <span class="ml-2 sm:hidden">Newer</span>
+                </a>
+              )}
+            </div>
+
+            <p class="text-center text-sm text-slate-500">
+              Page {page.currentPage} of {page.lastPage}
+            </p>
+
+            <div class="text-right">
+              {page.url.next && (
+                <a
+                  href={page.url.next}
+                  class="inline-flex items-center rounded-lg border border-indigo-200 px-4 py-2 font-medium text-indigo-700 transition hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <span class="mr-2 hidden sm:inline">
+                    Older performances
+                  </span>
+                  <span class="mr-2 sm:hidden">Older</span>
+                  <span aria-hidden="true">→</span>
+                </a>
+              )}
+            </div>
+          </nav>
+        )
+      }
+    </main>
+  </Container>
+</Layout>
+
+<style is:global>
+  body {
+    background: white;
+  }
+</style>
+
+<script>
+  /*
+   * Initialise every slideshow rendered on the current page.
+   * Each gallery maintains its own active slide.
+   */
+  document
+    .querySelectorAll<HTMLElement>("[data-embedded-gallery]")
+    .forEach((gallery) => {
+      const slides =
+        gallery.querySelectorAll<HTMLElement>("[data-slide]");
+
+      const thumbnails =
+        gallery.querySelectorAll<HTMLButtonElement>(
+          "[data-thumbnail]",
+        );
+
+      const previousButton =
+        gallery.querySelector<HTMLButtonElement>(
+          "[data-previous-slide]",
+        );
+
+      const nextButton =
+        gallery.querySelector<HTMLButtonElement>(
+          "[data-next-slide]",
+        );
+
+      const currentNumber =
+        gallery.querySelector<HTMLElement>(
+          "[data-current-number]",
+        );
+
+      let currentIndex = 0;
+
+      function showSlide(index: number) {
+        if (slides.length === 0) return;
+
+        /*
+         * Wrap from the last image to the first and vice versa.
+         */
+        currentIndex =
+          (index + slides.length) % slides.length;
+
+        slides.forEach((slide, slideIndex) => {
+          const isActive = slideIndex === currentIndex;
+
+          slide.classList.toggle("hidden", !isActive);
+        });
+
+        thumbnails.forEach(
+          (thumbnail, thumbnailIndex) => {
+            const isActive =
+              thumbnailIndex === currentIndex;
+
+            thumbnail.classList.toggle(
+              "opacity-60",
+              !isActive,
+            );
+
+            thumbnail.classList.toggle(
+              "opacity-100",
+              isActive,
+            );
+
+            thumbnail.classList.toggle(
+              "ring-2",
+              isActive,
+            );
+
+            thumbnail.classList.toggle(
+              "ring-indigo-500",
+              isActive,
+            );
+
+            thumbnail.setAttribute(
+              "aria-current",
+              isActive ? "true" : "false",
+            );
+
+            /*
+             * Keep the selected thumbnail visible when
+             * the thumbnail strip is horizontally scrollable.
+             */
+            if (isActive) {
+              thumbnail.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "nearest",
+              });
+            }
+          },
+        );
+
+        if (currentNumber) {
+          currentNumber.textContent = String(
+            currentIndex + 1,
+          );
+        }
+      }
+
+      previousButton?.addEventListener("click", () => {
+        showSlide(currentIndex - 1);
+      });
+
+      nextButton?.addEventListener("click", () => {
+        showSlide(currentIndex + 1);
+      });
+
+      thumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener("click", () => {
+          const requestedIndex = Number(
+            thumbnail.dataset.slideNumber,
+          );
+
+          if (Number.isNaN(requestedIndex)) return;
+
+          showSlide(requestedIndex);
+        });
+      });
+
+      /*
+       * Arrow-key navigation works when the performance
+       * gallery or one of its controls has focus.
+       */
+      gallery.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          showSlide(currentIndex - 1);
+        }
+
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          showSlide(currentIndex + 1);
+        }
+      });
+
+      showSlide(0);
+    });
+
+  const performanceRow =
+  document.querySelector<HTMLElement>(
+    "[data-performance-row]",
+  );
+
+const performanceCards =
+  document.querySelectorAll<HTMLElement>(
+    "[data-performance-card]",
+  );
+
+if (performanceRow) {
+  const performanceObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const card = entry.target as HTMLElement;
+
+        /*
+         * A lower threshold works better because neighboring cards
+         * are deliberately visible at the edges.
+         */
+        const isMainCard =
+          entry.isIntersecting &&
+          entry.intersectionRatio >= 0.55;
+
+        card.classList.toggle(
+          "scale-[0.97]",
+          !isMainCard,
+        );
+
+        card.classList.toggle(
+          "scale-100",
+          isMainCard,
+        );
+      });
+    },
+    {
+      root: performanceRow,
+      threshold: [0.55],
+    },
+  );
+
+  performanceCards.forEach((card) => {
+    performanceObserver.observe(card);
+  });
+}
+</script>
+
+ 
