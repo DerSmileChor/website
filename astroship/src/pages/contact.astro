@@ -12,124 +12,159 @@ import { Icon } from "astro-icon/components";
       <Fragment slot="title">Contact</Fragment>
       <Fragment slot="desc">We'd love to connect with you!</Fragment>
     </Sectionhead>
- 
-<div
-  class="
-    mx-auto mt-16 grid max-w-4xl items-stretch gap-10
-    lg:grid-cols-[320px_420px_320px]
-  "
->
-  <!-- Column 1 -->
-  <div class="h-full">
-    <h2 class="text-2xl font-medium text-gray-800">
-      Contact Der Smile Chor
-    </h2>
 
-    <p class="mt-3 text-lg leading-relaxed text-slate-500">
-      Interested in joining?
-      <br />
-      Interested in having us come sing? Have other questions?
-      <br />
-      Fill out the form or send us an email.
-    </p>
-
-    <div class="mt-5">
-      <div class="mt-2 flex items-center space-x-2 text-gray-600">
-        <Icon
-          class="h-4 w-4 text-gray-400"
-          name="uil:envelope"
-        />
-
-        <a href="mailto:dersmilechor@gmail.com">
-          dersmilechor@gmail.com
-        </a>
-      </div>
-    </div>
-
-    <div class="mt-10 border-t border-slate-200 pt-8">
-      <h2 class="text-2xl font-semibold">
-        Follow the choir
-      </h2>
-
-      <div class="mt-5 flex flex-wrap gap-4">
-        <a
-          href="https://www.instagram.com/dersmilechor/"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div
+      class="
+        mx-auto mt-10 grid max-w-4xl items-stretch gap-12
+        md:mt-14
+        lg:mt-16 lg:grid-cols-[320px_420px_320px] lg:gap-10
+      "
+    >
+      <!-- Column 1 -->
+      <div class="h-full">
+        <h2
           class="
-            inline-flex items-center gap-2 rounded-md
-            border border-slate-300 px-5 py-3 font-medium
-            transition hover:bg-slate-50
+            text-2xl font-semibold leading-tight text-gray-800
+            lg:text-2xl lg:font-medium
           "
         >
-          <Icon name="bx:bxl-instagram" class="h-5 w-5" />
-          Instagram
-        </a>
+          Contact Der Smile Chor
+        </h2>
 
-        <a
-          href="https://www.facebook.com/share/16JrA3sF4V/"
-          target="_blank"
-          rel="noopener noreferrer"
+        <p
           class="
-            inline-flex items-center gap-2 rounded-md
-            border border-slate-300 px-5 py-3 font-medium
-            transition hover:bg-slate-50
+            mt-5 text-lg leading-relaxed text-slate-500
+            lg:mt-3
           "
         >
-          <Icon name="bx:bxl-facebook-circle" class="h-5 w-5" />
-          Facebook
-        </a>
+          Whether you're interested in joining, booking us, or just saying
+          hello, we'd love to hear from you.
+        </p>
+
+        <p class="mt-2 text-lg leading-relaxed text-slate-500">
+          Fill out the form or send us an email.
+        </p>
+
+        <div class="mt-6">
+          <a
+            href="mailto:dersmilechor@gmail.com"
+            class="
+              flex items-center gap-3 text-lg text-gray-600
+              transition hover:text-indigo-700
+            "
+          >
+            <Icon
+              class="h-5 w-5 shrink-0 text-gray-400"
+              name="uil:envelope"
+            />
+
+            <span class="break-all">
+              dersmilechor@gmail.com
+            </span>
+          </a>
+        </div>
+
+        <div class="mt-10 border-t border-slate-200 pt-8">
+          <h2 class="text-2xl font-semibold leading-tight lg:text-2xl">
+            Follow the choir
+          </h2>
+
+          <div
+            class="
+              mt-5 grid grid-cols-1 gap-3
+              sm:grid-cols-2
+              lg:flex lg:flex-wrap lg:gap-4
+            "
+          >
+            <a
+              href="https://www.instagram.com/dersmilechor/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="
+                inline-flex w-full items-center justify-center gap-3
+                rounded-lg border border-slate-300 px-5 py-3
+                font-medium transition hover:bg-slate-50
+                lg:w-auto lg:justify-start lg:rounded-md lg:py-3
+              "
+            >
+              <Icon name="bx:bxl-instagram" class="h-6 w-6 lg:h-5 lg:w-5" />
+              Instagram
+            </a>
+
+            <a
+              href="https://www.facebook.com/share/16JrA3sF4V/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="
+                inline-flex w-full items-center justify-center gap-3
+                rounded-lg border border-slate-300 px-5 py-3
+                font-medium transition hover:bg-slate-50
+                lg:w-auto lg:justify-start lg:rounded-md lg:py-3
+              "
+            >
+              <Icon
+                name="bx:bxl-facebook-circle"
+                class="h-6 w-6 lg:h-5 lg:w-5"
+              />
+              Facebook
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Column 2 -->
-  <div class="h-full">
- 
-    <Contactform />
-    
-  </div>
+      <!-- Column 2 -->
+      <div class="h-full">
+        <Contactform />
+      </div>
 
-  <!-- Column 3 -->
-  <div
-    class="
-      flex h-full flex-col overflow-hidden
-      rounded-lg border border-slate-200
-    "
-  >
-    <p class="px-4 py-4 text-center text-sm text-slate-600">
-      We rehearse every Tuesday evening at the
-      <br />
-      <strong>EinweltHaus</strong>
-      <br />
-      Schwanthalerstraße 80
-      <br />
-      80336 Munich
-    </p>
-
-    <img
-      src="/images/einwelthaus.png"
-      alt="Map showing the rehearsal location"
-      class="min-h-0 w-full flex-1 object-cover"
-    />
-
-    <div class="p-4">
-      <a
-        href="https://maps.app.goo.gl/ps78sSpPPjc72vk1A"
-        target="_blank"
-        rel="noopener noreferrer"
+      <!-- Column 3 -->
+      <div
         class="
-          flex w-full justify-center rounded
-          bg-blue-600 px-4 py-2 text-white
-          transition hover:bg-blue-700
+          flex h-full flex-col overflow-hidden
+          rounded-xl border border-slate-200
+          lg:rounded-lg
         "
       >
-        Open in Google Maps
-      </a>
+        <p
+          class="
+            px-5 py-5 text-center text-base leading-relaxed text-slate-600
+            lg:px-4 lg:py-4 lg:text-sm
+          "
+        >
+          We rehearse every Tuesday evening at the
+          <br />
+          <strong>EinweltHaus</strong>
+          <br />
+          Schwanthalerstraße 80
+          <br />
+          80336 Munich
+        </p>
+
+        <img
+          src="/images/einwelthaus.png"
+          alt="Map showing the rehearsal location"
+          class="
+            h-64 w-full object-cover
+            lg:min-h-0 lg:flex-1
+          "
+        />
+
+        <div class="p-4">
+          <a
+            href="https://maps.app.goo.gl/ps78sSpPPjc72vk1A"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="
+              flex w-full justify-center rounded-lg
+              bg-blue-600 px-4 py-3 font-medium text-white
+              transition hover:bg-blue-700
+              lg:rounded lg:py-2
+            "
+          >
+            Open in Google Maps
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   </Container>
 </Layout>
-
-

@@ -27,57 +27,69 @@ const menuitems = [
   },
 ];
 ---
-
 <Container>
-  <header class="flex flex-col lg:flex-row justify-between items-center my-5">
+  <header class="my-5">
     <Astronav>
-      <div class="w-32 sm:w-40 lg:w-48 h-auto">
-        <a href="/" class="text-lg"
+      <div class="w-full lg:flex lg:items-center lg:justify-between">
+        <!-- Logo and mobile menu button -->
+        <div class="flex w-full items-center justify-between lg:w-auto">
+          <a
+            href="/"
+            class="block shrink-0"
+            aria-label="Der Smile Chor homepage"
           >
-           <Picture
-      src={logoImage}
-      alt="Astronaut in the air"
-      widths={[240, 600, 1000]}
-      sizes="(max-width: 1000px) 100vw, 620px"
-      loading="eager"
-      format="avif"/>
-        </a>
-        <div class="block lg:hidden">
-          <MenuIcon class="w-4 h-4 text-gray-800" />
-        </div>
-      </div>
-      <MenuItems class="hidden w-full lg:w-auto mt-2 lg:flex lg:mt-0">
-        <ul class="flex flex-col lg:flex-row lg:gap-3">
-          {
-            menuitems.map((item, index) => (
-              <>
-                {item.children && (
-                  <Dropdown
-                    title={item.title}
-                    children={item.children}
-                    lastItem={index === menuitems.length - 1}
-                  />
-                )}
+            <Picture
+              src={logoImage}
+              alt="Der Smile Chor"
+              widths={[240, 600, 1000]}
+              sizes="(max-width: 640px) 128px, (max-width: 1024px) 160px, 192px"
+              loading="eager"
+              format="avif"
+              class="h-auto w-32 sm:w-40 lg:w-48"
+            />
+          </a>
 
-                {!item.children && (
-                  <li>
-                    <a
-                      href={item.path}
-                      class="flex lg:px-3 py-2 items-center text-gray-600 hover:text-gray-900">
-                      <span> {item.title}</span>
-                      {item.badge && (
-                        <span class="ml-1 px-2 py-0.5 text-[10px] animate-pulse font-semibold uppercase text-white bg-indigo-600 rounded-full">
-                          New
-                        </span>
-                      )}
-                    </a>
-                  </li>
-                )}
-              </>
-            ))
-          }
-        </ul>
-      </MenuItems>
+          <div class="flex items-center lg:hidden">
+            <MenuIcon class="h-7 w-7 text-gray-800" />
+          </div>
+        </div>
+
+        <!-- Navigation links -->
+        <MenuItems class="hidden w-full lg:flex lg:w-auto">
+          <ul class="mt-4 flex flex-col lg:mt-0 lg:flex-row lg:gap-3">
+            {
+              menuitems.map((item, index) => (
+                <>
+                  {item.children && (
+                    <Dropdown
+                      title={item.title}
+                      children={item.children}
+                      lastItem={index === menuitems.length - 1}
+                    />
+                  )}
+
+                  {!item.children && (
+                    <li>
+                      <a
+                        href={item.path}
+                        class="flex items-center py-2 text-gray-600 hover:text-gray-900 lg:px-3"
+                      >
+                        <span>{item.title}</span>
+
+                        {item.badge && (
+                          <span class="ml-1 animate-pulse rounded-full bg-indigo-600 px-2 py-0.5 text-[10px] font-semibold uppercase text-white">
+                            New
+                          </span>
+                        )}
+                      </a>
+                    </li>
+                  )}
+                </>
+              ))
+            }
+          </ul>
+        </MenuItems>
+      </div>
     </Astronav>
   </header>
 </Container>
