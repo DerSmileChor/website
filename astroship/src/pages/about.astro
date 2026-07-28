@@ -4,9 +4,13 @@ import { Picture } from "astro:assets";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
+ 
 
 // Filter team entries with 'draft: false' & date before current date
 const publishedTeamMembers = await getCollection("team", ({ data }) => {
+  return !data.draft && data.publishDate < new Date();
+});
+const publishedLocation = await getCollection("location", ({ data }) => {
   return !data.draft && data.publishDate < new Date();
 });
 ---
@@ -14,21 +18,18 @@ const publishedTeamMembers = await getCollection("team", ({ data }) => {
 <Layout title="About">
   <Container>
     <Sectionhead>
-      <Fragment slot="title">About</Fragment>
-      <Fragment slot="desc">We are a small passionate team.</Fragment>
+      <Fragment slot="title">Changing the world one smile at a time.</Fragment>
+      <Fragment slot="desc">Der Smile Chor is made up of singers from all around the world united by the conviction that <br> music can bring joy and healing.</Fragment>
     </Sectionhead>
 
     <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
       <h2 class="font-bold text-3xl text-gray-800">
-        Empowering the world with Astro.
+        Who We Are
       </h2>
       <p class="text-lg leading-relaxed text-slate-500">
-        We're a multi-cultural team from around the world! We come from diverse
-        backgrounds, bringing different personalities, experiences and skills to
-        the job. This is what makes our team so special.
-      </p>
-    </div>
-    <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
+        All choir members volunteer their time and talents out of personal motivation. Our performances are free of charge for the host facilities, and we cover all expenses ourselves through private contributions from our members. We are not a formal association, but rather a community of people dedicating their time, voices, and skills to bringing joy to others. Our concerts are often accompanied by small gifts, such as balloons or toys for children.    </p>
+</div>
+ <div class="grid md:grid-cols-3 gap-10 mx-auto max-w-4xl mt-12">
       {
         publishedTeamMembers.map((teamMemberEntry) => (
           <div class="group">
@@ -47,6 +48,39 @@ const publishedTeamMembers = await getCollection("team", ({ data }) => {
               <h2 class="text-lg text-gray-800">{teamMemberEntry.data.name}</h2>
               <h3 class="text-sm text-slate-500">
                 {teamMemberEntry.data.title}
+              </h3>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+    <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
+     <h2 class="font-bold text-3xl text-gray-800">
+        Where We Come From
+      </h2>
+    <p class="text-lg leading-relaxed text-slate-500">
+        A distinctive feature of "Smile" is our international community. Many of our members are expats from various countries who have found a common language through music. We sing primarily well-known songs in English. This allows people who do not yet speak German to get involved, become part of the local community, and actively give something back. No prior musical experience is required—just openness and a love for participating together. "Smile" naturally combines music, integration, and human connection. We bring people together, transcend boundaries, and create moving encounters—voice by voice, heart by heart.
+      </p>
+    </div>
+    <div class="grid md:grid-cols-1 gap-10 mx-auto max-w-4xl mt-12">
+      {
+        publishedLocation.map((location) => (
+          <div class="group">
+            <div class="w-full aspect-square">
+              <Picture
+                src={location.data.avatar.src}
+                alt={location.data.avatar.alt}
+                sizes="(max-width: 100px) 100vw, 400px"
+                width={800}
+                height={800}
+                class="w-3/4 mx-auto rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl bg-white object-cover object-center aspect-square"
+              />
+            </div>
+
+            <div class="mt-4 text-center">
+              <h2 class="text-lg text-gray-800">{location.data.name}</h2>
+              <h3 class="text-sm text-slate-500">
+                {location.data.title}
               </h3>
             </div>
           </div>
