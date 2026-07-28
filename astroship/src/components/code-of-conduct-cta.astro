@@ -1,0 +1,42 @@
+---
+import Link from "./ui/link.astro";
+import { Icon } from "astro-icon/components";
+
+const {
+  href = "documents/code-of-conduct.pdf",
+} = Astro.props;
+---
+
+<section
+  class="mx-auto mt-20 flex max-w-5xl flex-col items-center rounded-lg bg-blue-600 p-8 text-center md:px-20 md:py-16"
+>
+  <Icon
+    name="bx:bxs-file-pdf"
+    class="h-10 w-10 text-white"
+    aria-hidden="true"
+  />
+
+  <h2 class="mt-4 text-3xl tracking-tight text-white md:text-5xl">
+    Our Code of Conduct
+  </h2>
+
+  <p class="mt-4 max-w-2xl text-lg leading-relaxed text-slate-300">
+    We want every singer to feel welcome, respected, and safe. Read the
+    principles that guide our rehearsals, performances, and community.
+  </p>
+
+  <div class="mt-7">
+   <a
+  href="/documents/code-of-conduct.pdf"
+  target="_blank"
+  rel="noopener noreferrer"
+  class="inline-flex rounded-md bg-white px-6 py-3 font-semibold text-black transition hover:bg-slate-200"
+>
+      Read the Code of Conduct
+    </a>
+  </div>
+</section>
+
+
+
+
