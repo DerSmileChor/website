@@ -13,6 +13,26 @@ const publishedTeamMembers = await getCollection("team", ({ data }) => {
 const publishedLocation = await getCollection("location", ({ data }) => {
   return !data.draft && data.publishDate < new Date();
 });
+
+import { Icon } from "astro-icon/components";
+
+const locations = [
+  "Haus für Mutter und Kind des Paritätischen Wohlfahrtsverbandes",
+  "Flexiheim am Krautgarten",
+  'Städt. Notquartier "Am Hollerbusch"',
+  "Münchenstift Haus an der Effnerstraße",
+  "Seniorenzentrum Martha-Maria München",
+  "Haus am Wiesenweg Seniorenzentrum Pullach",
+  "Flüchtlingsunterkunft in der Meindlstraße 14a",
+  "Erstanlaufstelle für ukrainische Geflüchtete in der Dachauer Str.",
+  "Dezentrale Flüchtlingsunterkunft – Schatzbogen",
+  "Kinderklinik und Kinderpoliklinik im Dr. von Haunerschen Kinderspital",
+  "Kinderklinik im Klinikum Dritter Orden",
+  "Damenstift am Luitpoldpark",
+  "Caritas Altenheim St. Franziskus",
+  "Das Ronald McDonald Haus am Deutschen Herzzentrum",
+  "Evangelisches Pflegezentrum Westend",
+];
 ---
 
 <Layout title="About">
@@ -54,38 +74,93 @@ const publishedLocation = await getCollection("location", ({ data }) => {
         ))
       }
     </div>
+
+ <section class="mx-auto mt-16 max-w-4xl">
+  <div class="max-w-2xl">
+
+    <h2 class="mt-2 text-3xl font-bold text-gray-800">
+      Where We’ve Been
+    </h2>
+    <p class="mt-4 text-lg leading-relaxed text-slate-500">
+      We have performed at numerous locations around the Munich area,
+      including community centres, care homes, shelters, and hospitals.
+    </p>
+  </div>
+<ul class="mt-8 grid gap-x-10 md:grid-cols-2">
+  {
+    locations.slice(0, 6).map((location) => (
+      <li class="flex items-start gap-3 border-b border-slate-200 px-2 py-4">
+        <Icon
+          name="bx:bxs-music"
+          class="mt-1 h-5 w-5 shrink-0 text-blue-600"
+        />
+        <span>{location}</span>
+      </li>
+    ))
+  }
+</ul>
+
+<details class="mt-5">
+  <summary class="cursor-pointer font-medium text-blue-600">
+    Show more locations
+  </summary>
+
+  <ul class="mt-4 grid gap-x-10 md:grid-cols-2">
+    {
+      locations.slice(6).map((location) => (
+        <li class="flex items-start gap-3 border-b border-slate-200 px-2 py-4">
+          <Icon
+            name="bx:bxs-music"
+            class="mt-1 h-5 w-5 shrink-0 text-blue-600"
+          />
+          <span>{location}</span>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+</section>
+
     <div class="flex flex-col gap-3 mx-auto max-w-4xl mt-16">
      <h2 class="font-bold text-3xl text-gray-800">
         Where We Come From
       </h2>
     <p class="text-lg leading-relaxed text-slate-500">
-        A distinctive feature of "Smile" is our international community. Many of our members are expats from various countries who have found a common language through music. We sing primarily well-known songs in English. This allows people who do not yet speak German to get involved, become part of the local community, and actively give something back. No prior musical experience is required—just openness and a love for participating together. "Smile" naturally combines music, integration, and human connection. We bring people together, transcend boundaries, and create moving encounters—voice by voice, heart by heart.
+        A distinctive feature of "Smile" is our international community. Many of our members come from outside of Germany who have found a common language through music. We sing primarily well-known songs in English. This allows people who do not yet speak German to get involved, become part of the local community, and actively give something back. No prior musical experience is required—just openness and a love for participating together. "Smile" naturally combines music, integration, and human connection. We bring people together, transcend boundaries, and create moving encounters—voice by voice, heart by heart.
       </p>
     </div>
-    <div class="grid md:grid-cols-1 gap-10 mx-auto max-w-4xl mt-12">
-      {
-        publishedLocation.map((location) => (
-          <div class="group">
-            <div class="w-full aspect-square">
-              <Picture
-                src={location.data.avatar.src}
-                alt={location.data.avatar.alt}
-                sizes="(max-width: 100px) 100vw, 400px"
-                width={800}
-                height={800}
-                class="w-3/4 mx-auto rounded-md transition group-hover:-translate-y-1 group-hover:shadow-xl bg-white object-cover object-center aspect-square"
-              />
-            </div>
+  <div class="mx-auto mt-12 grid max-w-4xl gap-10 md:grid-cols-1">
+  {
+    publishedLocation.map((location) => (
+      <figure class="group mx-auto w-3/4">
+        <Picture
+          src={location.data.avatar.src}
+          alt={location.data.avatar.alt}
+          sizes="(max-width: 768px) 100vw, 800px"
+          width={800}
+          height={800}
+          class="
+            block w-full rounded-md bg-white object-cover object-center
+            transition
+            group-hover:-translate-y-1
+            group-hover:shadow-xl
+          "
+        />
 
-            <div class="mt-4 text-center">
-              <h2 class="text-lg text-gray-800">{location.data.name}</h2>
-              <h3 class="text-sm text-slate-500">
-                {location.data.title}
-              </h3>
-            </div>
-          </div>
-        ))
-      }
-    </div>
+        <figcaption class="mt-3 text-center text-xs leading-relaxed text-slate-500">
+          Image by {location.data.attribution.creator}, available from{" "}
+          <a
+            href={location.data.attribution.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-medium text-blue-600 underline underline-offset-2 hover:text-blue-700"
+          >
+            {location.data.attribution.source}
+          </a>
+        </figcaption>
+      </figure>
+    ))
+  }
+</div>
   </Container>
 </Layout>
