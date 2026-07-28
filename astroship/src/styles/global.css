@@ -1,1 +1,43 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap");
+
 @import "tailwindcss";
+
+body {
+  background-color: var(--color-indigo-50);
+  font-family: "Atkinson Hyperlegible Next", sans-serif;
+}
+
+ 
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Atkinson Hyperlegible Next", serif;
+  font-weight: 600;
+}
+
+:root {
+  --brand-blue: #2457f5;
+  --brand-blue-dark: #183ebd;
+  --brand-ink: #26344d;
+  --brand-text: #5b6980;
+  --brand-cream: #fffaf2;
+  --brand-soft-blue: #edf3ff;
+  --brand-coral: #ef8c82;
+}
+ 
+ 
+a {
+  transition:
+    color 150ms ease,
+    background-color 150ms ease,
+    transform 150ms ease;
+}
+
+::selection {
+  background-color: var(--brand-soft-blue);
+  color: var(--brand-ink);
+}
