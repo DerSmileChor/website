@@ -1,4 +1,31 @@
+---
+// @ts-ignore
+import { Icon } from "astro-icon/components";
+---
+
 <footer class="my-20">
+<div class="mb-6 flex justify-center gap-4">
+  <a
+    href="https://www.facebook.com/share/16JrA3sF4V/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Der Smile Chor on Facebook"
+    class="text-slate-600 transition hover:text-black"
+  >
+    <Icon name="bx:bxl-facebook-circle" class="h-6 w-6" />
+  </a>
+
+  <a
+    href="https://www.instagram.com/dersmilechor/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Der Smile Chor on Instagram"
+    class="text-slate-600 transition hover:text-black"
+  >
+    <Icon name="bx:bxl-instagram" class="h-6 w-6" />
+  </a>
+</div>
+
   <p class="text-center text-sm text-slate-500">
     Copyright © {new Date().getFullYear()} Astroship. All rights reserved.
   </p>
