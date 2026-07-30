@@ -49,15 +49,17 @@ export async function getStaticPaths({ paginate }) {
 const { page } = Astro.props;
 ---
 
-<Layout title="Performances">
+<main style="--page-accent: var(--accent-performance);">
+<Layout title="Performances"
+ accent="var(--accent-performance)">
   <Container>
     <Sectionhead>
-      <Fragment slot="title">Performances</Fragment>
+      <Fragment slot="title"> Performances </Fragment>
 
       <Fragment slot="desc">
-        Der Smile Chor puts on a summer and winter performance every year.
+        Der Smile Chor puts on a <span class = "accent-text">summer</span> and <span class = "accent-text">winter</span> performance every year.
         <br />
-        Explore photographs from our past performances below.
+        <span class = "accent-text">Explore</span> photographs from our <span class = "accent-text">past performances</span> below.
       </Fragment>
     </Sectionhead>
 
@@ -94,7 +96,7 @@ const { page } = Astro.props;
         <article
             data-embedded-gallery
             tabindex="0"
-            class="overflow-hidden rounded-2xl border border-indigo-100 bg-white/70 shadow-sm outline-none transition focus-within:ring-2 focus-within:ring-indigo-400 focus:ring-2 focus:ring-indigo-400"
+           class="performance-card overflow-hidden rounded-2xl border bg-white/70 shadow-sm outline-none transition focus-within:ring-2 focus:ring-2"
             aria-label={`Photo gallery for ${performance.data.title}`}
           >
 
@@ -163,8 +165,8 @@ const { page } = Astro.props;
   </div>
 
   <!-- Performance title and information -->
-  <header class="border-b border-indigo-100 bg-zinc-50 p-6 sm:p-8">
-    <p class="text-sm font-medium uppercase tracking-wide text-indigo-600">
+<header class="border-b border-indigo-100 bg-zinc-50 p-6 sm:p-8">
+   <p class="accent-text text-sm font-medium uppercase tracking-wide">
       {performance.data.category}
     </p>
 
@@ -199,7 +201,7 @@ const { page } = Astro.props;
   <!-- Thumbnail strip -->
   {
     photos.length > 1 && (
-      <div class="bg-indigo-50/60 px-4 py-4">
+    <div class="performance-thumbnail-area px-4 py-4">
         <div
           class="flex gap-3 overflow-x-auto pb-1"
           aria-label={`Choose a photo from ${performance.data.title}`}
@@ -209,13 +211,12 @@ const { page } = Astro.props;
               type="button"
               data-thumbnail
               data-slide-number={index}
-              class:list={[
-                "shrink-0 rounded-lg opacity-60 transition hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-indigo-500",
-                {
-                  "opacity-100 ring-2 ring-indigo-500":
-                    index === 0,
-                },
-              ]}
+            class:list={[
+             "performance-thumbnail shrink-0 rounded-lg opacity-60 transition hover:opacity-100 focus:outline-none focus:ring-2",
+  {
+    "performance-thumbnail-active opacity-100 ring-2": index === 0,
+  },
+]}
               aria-label={`Show photo ${index + 1} of ${photos.length}`}
               aria-current={index === 0 ? "true" : "false"}
             >
@@ -270,13 +271,13 @@ const { page } = Astro.props;
               {page.url.next && (
                 <a
                   href={page.url.next}
-                  class="inline-flex items-center rounded-lg border border-indigo-200 px-4 py-2 font-medium text-indigo-700 transition hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  class="inline-flex items-center rounded-lg border border-indigo-200 px-4 py-2 font-medium accent-border transition hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 >
-                  <span class="mr-2 hidden sm:inline">
+                  <span class="mr-2 hidden sm:inline accent-text" >
                     Older performances
                   </span>
-                  <span class="mr-2 sm:hidden">Older</span>
-                  <span aria-hidden="true">→</span>
+                  <span class="mr-2 sm:hidden accent-text">Older</span>
+                  <span aria-hidden="true" class ="accent-text">→</span>
                 </a>
               )}
             </div>
@@ -286,7 +287,7 @@ const { page } = Astro.props;
     </main>
   </Container>
 </Layout>
-
+</main>
 <style is:global>
   body {
     background: white;

@@ -7,25 +7,38 @@ import { Picture } from "astro:assets";
 import logoImage from "assets/logo2_transparent.png";
 
 const menuitems = [
- {
+  {
     title: "About",
     path: "/about",
+    accent: "var(--accent-about)",
   },
-
   {
     title: "Join Us",
     path: "/join",
+    accent: "var(--accent-join)",
   },
- 
   {
     title: "Performances",
     path: "/performance",
+    accent: "var(--accent-events)",
   },
   {
     title: "Contact",
     path: "/contact",
+    accent: "var(--accent-contact)",
   },
 ];
+
+const currentPath = Astro.url.pathname;
+
+const isActive = (path: string) => {
+  if (path === "/") {
+    return currentPath === "/";
+  }
+
+  return currentPath.startsWith(path);
+};
+
 ---
 <Container>
   <header class="my-5">
@@ -70,18 +83,23 @@ const menuitems = [
 
                   {!item.children && (
                     <li>
-                      <a
-                        href={item.path}
-                        class="flex items-center py-2 text-gray-600 hover:text-gray-900 lg:px-3"
-                      >
-                        <span>{item.title}</span>
+                    <a
+  href={item.path}
+  style={`--link-accent: ${item.accent};`}
+  class:list={[
+    "nav-link flex items-center py-2 lg:px-3",
+    { "nav-link-active": isActive(item.path) },
+  ]}
+>
+  <span>{item.title}</span>
+</a>
 
                         {item.badge && (
                           <span class="ml-1 animate-pulse rounded-full bg-indigo-600 px-2 py-0.5 text-[10px] font-semibold uppercase text-white">
                             New
                           </span>
                         )}
-                      </a>
+              
                     </li>
                   )}
                 </>

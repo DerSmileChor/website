@@ -78,11 +78,12 @@ const join = [
   },
 ];
 ---
-
-<Layout title="Join">
+<main style="--page-accent: var(--accent-join);">
+<Layout title="Join"
+ accent="var(--accent-join)">
   <Container>
     <Sectionhead>
-      <Fragment slot="title">Come make music with us!</Fragment>
+      <Fragment slot="title">Come make <span class = "accent-text">music </span> with us!</Fragment>
       <Fragment slot="desc">
        <div
   class="
@@ -93,23 +94,23 @@ const join = [
     md:px-8
   "
 >
-  <p class="mb-3 text-center text-sm font-semibold uppercase tracking-wide text-blue-600">
+  <p class="mb-3 text-center text-sm font-semibold uppercase tracking-wide accent-text">
     How our seasons work
   </p>
 
   <p class="text-center leading-7 text-slate-700">
     We perform two seasons each year, each consisting of around <br>
-    <strong>10 rehearsals</strong> and <strong>5–8 performances</strong>.
+    <strong><span class = "accent-text">10 rehearsals</span></strong> and <strong><span class = "accent-text">5–8 performances</span></strong>.
   </p>
 
   <p class="mt-3 text-center leading-7 text-slate-700">
-    Our winter season runs from <strong>October to December</strong> with holiday repertoire,
-    while our summer season runs from <strong>April to June</strong> with popular music.
+    Our winter season runs from <strong><span class = "accent-text">October to December</span></strong> with holiday repertoire,
+    while our summer season runs from <strong><span class = "accent-text">April to June</span></strong> with popular music.
   </p>
 
   <p class="mt-3 text-center font-medium leading-7 text-slate-800">
-    New participants join at the beginning of each season, as the short
-    rehearsal period makes mid-season entry difficult.
+    New participants <span class = "accent-text">join at the beginning of each season</span>, as the short
+    rehearsal period makes <span class = "accent-text">mid-season entry difficult.</span>
   </p>
 </div>
       </Fragment>
@@ -122,3 +123,4 @@ const join = [
   </Container>
 
 </Layout>
+</main>

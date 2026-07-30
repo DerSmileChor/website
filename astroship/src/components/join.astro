@@ -5,7 +5,7 @@ import Link from "@components/ui/link.astro";
 
 const { plan } = Astro.props;
 ---
-
+<main style="--page-accent: var(--accent-join);">
 <div class="h-full">
   <div
     class="
@@ -20,7 +20,7 @@ const { plan } = Astro.props;
         {plan.name}
       </h4>
 
-      <p class="mt-3 text-4xl font-bold text-black">
+      <p class="mt-3 text-4xl font-bold accent-text">
         {
           plan.join && typeof plan.join === "object"
             ? plan.join.monthly
@@ -42,7 +42,7 @@ const { plan } = Astro.props;
               <li class="flex items-start gap-3 text-gray-700">
                 <Icon
                   name="bx:bxs-music"
-                  class="mt-0.5 h-5 w-5 shrink-0 text-black"
+                  class="mt-0.5 h-5 w-5 shrink-0 accent-text"
                 />
                 <span>{item}</span>
               </li>
@@ -65,7 +65,7 @@ const { plan } = Astro.props;
               <li class="flex items-start gap-3 text-gray-700">
                 <Icon
                   name="bx:music"
-                  class="mt-0.5 h-5 w-5 shrink-0 text-black"
+                  class="mt-0.5 h-5 w-5 shrink-0 accent-text"
                 />
                 <span>{item}</span>
               </li>
@@ -88,3 +88,5 @@ const { plan } = Astro.props;
     </div>
   </div>
 </div>
+
+</main>

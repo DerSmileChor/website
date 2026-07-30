@@ -9,6 +9,7 @@ import "../styles/global.css";
 
 export interface Props {
   title: string;
+  accent?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
@@ -18,11 +19,16 @@ const resolvedImageWithDomain = new URL(
   Astro.site
 ).toString();
 
-const { title } = Astro.props;
+
+const {
+  title,
+  accent = "var(--accent-home)",
+} = Astro.props;
 
 const makeTitle = title
   ? title + " | " + "Der Smile Chor"
   : "Der Smile Chor - Community through music";
+
 ---
 
 <!DOCTYPE html>
@@ -57,7 +63,7 @@ const makeTitle = title
   }}
 />
   </head>
-  <body>
+   <body style={`--page-accent: ${accent};`}>
     <Navbar />
     <slot />
     <Footer />

@@ -6,11 +6,13 @@ import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 ---
 
-<Layout title="Contact">
+<main style="--page-accent: var(--accent-contact);">
+<Layout title="Contact"
+accent="var(--accent-contact)">
   <Container>
     <Sectionhead>
       <Fragment slot="title">Contact</Fragment>
-      <Fragment slot="desc">We'd love to connect with you!</Fragment>
+      <Fragment slot="desc">We'd love to <span class = "accent-text">connect</span> with you!</Fragment>
     </Sectionhead>
 
     <div
@@ -28,7 +30,7 @@ import { Icon } from "astro-icon/components";
             lg:text-2xl lg:font-medium
           "
         >
-          Contact Der Smile Chor
+        <span class = "accent-text">  Contact </span> Der Smile Chor
         </h2>
 
         <p
@@ -66,7 +68,7 @@ import { Icon } from "astro-icon/components";
 
         <div class="mt-10 border-t border-slate-200 pt-8">
           <h2 class="text-2xl font-semibold leading-tight lg:text-2xl">
-            Follow the choir
+            <span class = "accent-text">Follow</span> the choir
           </h2>
 
           <div
@@ -82,7 +84,7 @@ import { Icon } from "astro-icon/components";
               rel="noopener noreferrer"
               class="
                 inline-flex w-full items-center justify-center gap-3
-                rounded-lg border border-slate-300 px-5 py-3
+                rounded-lg border border-slate-300 px-5 py-3 accent-text
                 font-medium transition hover:bg-slate-50
                 lg:w-auto lg:justify-start lg:rounded-md lg:py-3
               "
@@ -96,7 +98,7 @@ import { Icon } from "astro-icon/components";
               target="_blank"
               rel="noopener noreferrer"
               class="
-                inline-flex w-full items-center justify-center gap-3
+                inline-flex w-full items-center justify-center gap-3 accent-text
                 rounded-lg border border-slate-300 px-5 py-3
                 font-medium transition hover:bg-slate-50
                 lg:w-auto lg:justify-start lg:rounded-md lg:py-3
@@ -133,7 +135,7 @@ import { Icon } from "astro-icon/components";
         >
           We rehearse every Tuesday evening at the
           <br />
-          <strong>EinweltHaus</strong>
+          <strong><span class = "accent-text">EinweltHaus </span></strong>
           <br />
           Schwanthalerstraße 80
           <br />
@@ -156,7 +158,7 @@ import { Icon } from "astro-icon/components";
             rel="noopener noreferrer"
             class="
               flex w-full justify-center rounded-lg
-              bg-blue-600 px-4 py-3 font-medium text-white
+              accent-background px-4 py-3 font-medium text-white
               transition hover:bg-blue-700
               lg:rounded lg:py-2
             "
@@ -168,3 +170,4 @@ import { Icon } from "astro-icon/components";
     </div>
   </Container>
 </Layout>
+</main>
