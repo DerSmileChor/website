@@ -1,0 +1,454 @@
+---
+interface Props {
+  videoId: string;
+  videoTitle?: string;
+  thumbnail?: string;
+}
+
+const {
+  videoId,
+  videoTitle = "Der Smile Chor performance",
+  thumbnail,
+} = Astro.props;
+
+const thumbnailUrl =
+  thumbnail ??
+  `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+
+
+---
+
+<div
+  class="smile-video-flip"
+  data-smile-video-flip
+  data-video-id={videoId}
+>
+  <div class="smile-video-flip__inner">
+    <!-- Front: logo -->
+    <button
+      type="button"
+      class="smile-video-flip__face smile-video-flip__front"
+      data-open-card
+      aria-label="Show Der Smile Chor video"
+      aria-expanded="false"
+    >
+      <span class="smile-video-flip__logo">
+  <slot name="logo" />
+</span>
+
+<span class="smile-video-flip__hint" aria-hidden="true">
+  ↻
+</span>
+    </button>
+
+    <!-- Back: thumbnail, then YouTube player -->
+    <div
+      class="smile-video-flip__face smile-video-flip__back"
+      data-video-face
+      aria-hidden="true"
+    >
+      <button
+        type="button"
+        class="smile-video-flip__poster"
+        data-play-video
+        aria-label={`Play ${videoTitle}`}
+      >
+        <img
+          src={thumbnailUrl}
+          alt=""
+          loading="lazy"
+        />
+
+        <span class="smile-video-flip__play" aria-hidden="true">
+          ▶
+        </span>
+      </button>
+
+      <div
+        class="smile-video-flip__player"
+        data-player-container
+        hidden
+      >
+        <iframe
+          data-youtube-player
+          title={videoTitle}
+          src=""
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+  <button
+  type="button"
+  class="smile-video-flip__back-arrow"
+  data-close-card
+  aria-label="Return to the Smile logo"
+>
+  <span aria-hidden="true">↩</span>
+</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .smile-video-flip {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    perspective: 1200px;
+  }
+
+  .smile-video-flip__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 420ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .smile-video-flip.is-open .smile-video-flip__inner {
+    transform: rotateY(180deg);
+  }
+
+  .smile-video-flip__face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 0;
+    border-radius: 1rem;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .smile-video-flip__front {
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    cursor: pointer;
+    background: transparent;
+  }
+
+  .smile-video-flip__front:focus-visible {
+    outline: 3px solid var(--page-accent);
+    outline-offset: 4px;
+  }
+
+  .smile-video-flip__logo {
+    display: grid;
+    width: 100%;
+    place-items: center;
+    transition:
+      transform 220ms ease,
+      filter 220ms ease;
+  }
+
+  .smile-video-flip__front:hover .smile-video-flip__logo {
+    transform: scale(1.02) rotate(0.35deg);
+    filter: saturate(1.08);
+  }
+
+  .smile-video-flip__back {
+    background: #000;
+    transform: rotateY(180deg);
+  }
+
+  .smile-video-flip__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000;
+  }
+
+  .smile-video-flip__poster img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .smile-video-flip__poster::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+    background: rgb(0 0 0 / 18%);
+    transition: background-color 180ms ease;
+  }
+
+  .smile-video-flip__poster:hover::after {
+    background: rgb(0 0 0 / 28%);
+  }
+
+  .smile-video-flip__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    display: grid;
+    width: 4.5rem;
+    height: 4.5rem;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 45%);
+    border-radius: 999px;
+    color: white;
+    font-size: 1.65rem;
+    background: rgb(0 0 0 / 62%);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 25%);
+    transform: translate(-50%, -50%);
+    transition:
+      transform 180ms ease,
+      background-color 180ms ease;
+  }
+
+  .smile-video-flip__poster:hover .smile-video-flip__play {
+    background: rgb(0 0 0 / 78%);
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+
+  .smile-video-flip__poster:focus-visible {
+    outline: 3px solid white;
+    outline-offset: -6px;
+  }
+
+  .smile-video-flip__player {
+    position: absolute;
+    inset: 0;
+  }
+
+  .smile-video-flip__player iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .smile-video-flip__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 3;
+    display: grid;
+    width: 2.5rem;
+    height: 2.5rem;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 35%);
+    border-radius: 999px;
+    cursor: pointer;
+    color: white;
+    font-size: 1.6rem;
+    line-height: 1;
+    background: rgb(0 0 0 / 65%);
+    transition: background-color 160ms ease;
+  }
+
+  .smile-video-flip__close:hover {
+    background: rgb(0 0 0 / 88%);
+  }
+
+  .smile-video-flip__close:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 2px;
+  }
+
+  :global(.smile-video-flip__logo img),
+  :global(.smile-video-flip__logo svg) {
+    display: block;
+    width: 100%;
+    max-width: 30rem;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+ @media (prefers-reduced-motion: reduce) {
+  .smile-video-flip__inner,
+  .smile-video-flip__logo,
+  .smile-video-flip__play,
+  .smile-video-flip__hint {
+    transition: none;
+    animation: none;
+  }
+}
+
+.smile-video-flip__hint {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1.1rem;
+  display: grid;
+  width: 2.4rem;
+  height: 2.4rem;
+  place-items: center;
+  border: 1px solid
+    color-mix(in srgb, var(--page-accent) 28%, transparent);
+  border-radius: 999px;
+  color: var(--page-accent);
+  font-size: 1.35rem;
+  line-height: 1;
+  background: rgb(255 255 255 / 72%);
+  box-shadow: 0 6px 18px rgb(38 52 77 / 10%);
+  opacity: 0.72;
+  transform: rotate(-18deg);
+  transition:
+    opacity 180ms ease,
+    transform 260ms ease,
+    background-color 180ms ease;
+}
+
+.smile-video-flip__front:hover .smile-video-flip__hint,
+.smile-video-flip__front:focus-visible .smile-video-flip__hint {
+  opacity: 1;
+  background: rgb(255 255 255 / 92%);
+  transform: rotate(22deg) scale(1.05);
+} 
+
+@keyframes flip-hint {
+  0%,
+  84%,
+  100% {
+    transform: rotate(-18deg);
+  }
+
+  90% {
+    transform: rotate(18deg);
+  }
+
+  95% {
+    transform: rotate(-4deg);
+  }
+}
+
+.smile-video-flip__hint {
+  animation: flip-hint 4.5s ease-in-out infinite;
+}
+
+.smile-video-flip__front:hover .smile-video-flip__hint,
+.smile-video-flip__front:focus-visible .smile-video-flip__hint {
+  animation: none;
+} 
+
+.smile-video-flip__back-arrow {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 3;
+
+  display: grid;
+  width: 2.6rem;
+  height: 2.6rem;
+  place-items: center;
+
+  border: 1px solid rgb(255 255 255 / 40%);
+  border-radius: 999px;
+
+  color: white;
+  font-size: 1.35rem;
+  line-height: 1;
+
+  background: rgb(0 0 0 / 60%);
+  box-shadow: 0 6px 18px rgb(0 0 0 / 20%);
+  cursor: pointer;
+
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.smile-video-flip__back-arrow:hover {
+  background: rgb(0 0 0 / 82%);
+  transform: rotate(-12deg) scale(1.06);
+}
+
+.smile-video-flip__back-arrow:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 2px;
+}
+</style>
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>("[data-smile-video-flip]")
+    .forEach((card) => {
+      const videoId = card.dataset.videoId;
+
+      const openButton =
+        card.querySelector<HTMLButtonElement>("[data-open-card]");
+
+      const closeButton =
+        card.querySelector<HTMLButtonElement>("[data-close-card]");
+
+      const playButton =
+        card.querySelector<HTMLButtonElement>("[data-play-video]");
+
+      const videoFace =
+        card.querySelector<HTMLElement>("[data-video-face]");
+
+      const playerContainer =
+        card.querySelector<HTMLElement>("[data-player-container]");
+
+      const iframe =
+        card.querySelector<HTMLIFrameElement>("[data-youtube-player]");
+
+      if (
+        !videoId ||
+        !openButton ||
+        !closeButton ||
+        !playButton ||
+        !videoFace ||
+        !playerContainer ||
+        !iframe
+      ) {
+        return;
+      }
+
+      const openCard = () => {
+        card.classList.add("is-open");
+        openButton.setAttribute("aria-expanded", "true");
+        videoFace.setAttribute("aria-hidden", "false");
+
+        window.setTimeout(() => {
+          playButton.focus();
+        }, 420);
+      };
+
+      const playVideo = () => {
+        iframe.src =
+          `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+
+        playButton.hidden = true;
+        playerContainer.hidden = false;
+      };
+
+      const closeCard = () => {
+        card.classList.remove("is-open");
+        openButton.setAttribute("aria-expanded", "false");
+        videoFace.setAttribute("aria-hidden", "true");
+
+        iframe.src = "";
+        playerContainer.hidden = true;
+        playButton.hidden = false;
+
+        window.setTimeout(() => {
+          openButton.focus();
+        }, 420);
+      };
+
+      openButton.addEventListener("click", openCard);
+      playButton.addEventListener("click", playVideo);
+      closeButton.addEventListener("click", closeCard);
+
+      card.addEventListener("keydown", (event) => {
+        if (
+          event.key === "Escape" &&
+          card.classList.contains("is-open")
+        ) {
+          closeCard();
+        }
+      });
+    });
+</script>
+
+
