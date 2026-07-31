@@ -12,11 +12,7 @@ const {
 } = Astro.props;
 
 const thumbnailUrl =
-  thumbnail ??
-  `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-
-
-
+  thumbnail ?? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 ---
 
 <div
@@ -27,19 +23,19 @@ const thumbnailUrl =
   <div class="smile-video-flip__inner">
     <!-- Front: logo -->
     <button
-      type="button"
       class="smile-video-flip__face smile-video-flip__front"
       data-open-card
-      aria-label="Show Der Smile Chor video"
+      type="button"
+      aria-label="Show performance video"
       aria-expanded="false"
     >
       <span class="smile-video-flip__logo">
-  <slot name="logo" />
-</span>
+        <slot name="logo" />
+      </span>
 
-<span class="smile-video-flip__hint" aria-hidden="true">
-  ↻
-</span>
+      <span class="smile-video-flip__arrow smile-video-flip__arrow--front" aria-hidden="true">
+        ↻
+      </span>
     </button>
 
     <!-- Back: thumbnail, then YouTube player -->
@@ -49,16 +45,12 @@ const thumbnailUrl =
       aria-hidden="true"
     >
       <button
-        type="button"
         class="smile-video-flip__poster"
         data-play-video
+        type="button"
         aria-label={`Play ${videoTitle}`}
       >
-        <img
-          src={thumbnailUrl}
-          alt=""
-          loading="lazy"
-        />
+        <img src={thumbnailUrl} alt="" loading="lazy" />
 
         <span class="smile-video-flip__play" aria-hidden="true">
           ▶
@@ -79,14 +71,15 @@ const thumbnailUrl =
         ></iframe>
       </div>
 
-  <button
-  type="button"
-  class="smile-video-flip__back-arrow"
-  data-close-card
-  aria-label="Return to the Smile logo"
->
-  <span aria-hidden="true">↩</span>
-</button>
+      <!-- Keep exactly one data-close-card button. -->
+      <button
+        class="smile-video-flip__arrow smile-video-flip__arrow--back"
+        data-close-card
+        type="button"
+        aria-label="Return to the Smile logo"
+      >
+        <span aria-hidden="true">↻</span>
+      </button>
     </div>
   </div>
 </div>
@@ -109,6 +102,12 @@ const thumbnailUrl =
   .smile-video-flip.is-open .smile-video-flip__inner {
     transform: rotateY(180deg);
   }
+
+.smile-video-flip.is-open .smile-video-flip__arrow--front {
+  visibility: hidden;
+  opacity: 0;
+  animation: none;
+}
 
   .smile-video-flip__face {
     position: absolute;
@@ -227,34 +226,63 @@ const thumbnailUrl =
     border: 0;
   }
 
-  .smile-video-flip__close {
+  .smile-video-flip__arrow {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
+    right: 1.25rem;
+    bottom: 1.1rem;
     z-index: 3;
     display: grid;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
     place-items: center;
-    border: 1px solid rgb(255 255 255 / 35%);
+    border: 1px solid
+      color-mix(in srgb, var(--page-accent) 28%, transparent);
     border-radius: 999px;
-    cursor: pointer;
-    color: white;
-    font-size: 1.6rem;
+    color: var(--page-accent);
+    font: inherit;
+    font-size: 1.35rem;
     line-height: 1;
-    background: rgb(0 0 0 / 65%);
-    transition: background-color 160ms ease;
+    background: rgb(255 255 255 / 72%);
+    box-shadow: 0 6px 18px rgb(38 52 77 / 10%);
+    opacity: 0.72;
+    transition:
+      opacity 180ms ease,
+      transform 260ms ease,
+      background-color 180ms ease;
   }
 
-  .smile-video-flip__close:hover {
-    background: rgb(0 0 0 / 88%);
+  .smile-video-flip__arrow--front {
+    pointer-events: none;
+    transform: rotate(-18deg);
+    animation: flip-hint 4.5s ease-in-out infinite;
   }
 
-  .smile-video-flip__close:focus-visible {
-    outline: 3px solid white;
+  .smile-video-flip__arrow--back {
+    cursor: pointer;
+    transform: scaleX(-1) rotate(-18deg);
+  }
+
+  .smile-video-flip__front:hover .smile-video-flip__arrow--front,
+  .smile-video-flip__front:focus-visible .smile-video-flip__arrow--front {
+    opacity: 1;
+    background: rgb(255 255 255 / 92%);
+    transform: rotate(22deg) scale(1.05);
+    animation: none;
+  }
+
+  .smile-video-flip__arrow--back:hover {
+    opacity: 1;
+    background: rgb(255 255 255 / 92%);
+    transform: scaleX(-1) rotate(22deg) scale(1.05);
+  }
+
+  .smile-video-flip__arrow--back:focus-visible {
+    outline: 3px solid var(--page-accent);
     outline-offset: 2px;
   }
 
+  :global(.smile-video-flip__logo picture),
   :global(.smile-video-flip__logo img),
   :global(.smile-video-flip__logo svg) {
     display: block;
@@ -264,108 +292,31 @@ const thumbnailUrl =
     object-fit: contain;
   }
 
- @media (prefers-reduced-motion: reduce) {
-  .smile-video-flip__inner,
-  .smile-video-flip__logo,
-  .smile-video-flip__play,
-  .smile-video-flip__hint {
-    transition: none;
-    animation: none;
-  }
-}
+  @keyframes flip-hint {
+    0%,
+    84%,
+    100% {
+      transform: rotate(-18deg);
+    }
 
-.smile-video-flip__hint {
-  position: absolute;
-  right: 1.25rem;
-  bottom: 1.1rem;
-  display: grid;
-  width: 2.4rem;
-  height: 2.4rem;
-  place-items: center;
-  border: 1px solid
-    color-mix(in srgb, var(--page-accent) 28%, transparent);
-  border-radius: 999px;
-  color: var(--page-accent);
-  font-size: 1.35rem;
-  line-height: 1;
-  background: rgb(255 255 255 / 72%);
-  box-shadow: 0 6px 18px rgb(38 52 77 / 10%);
-  opacity: 0.72;
-  transform: rotate(-18deg);
-  transition:
-    opacity 180ms ease,
-    transform 260ms ease,
-    background-color 180ms ease;
-}
+    90% {
+      transform: rotate(18deg);
+    }
 
-.smile-video-flip__front:hover .smile-video-flip__hint,
-.smile-video-flip__front:focus-visible .smile-video-flip__hint {
-  opacity: 1;
-  background: rgb(255 255 255 / 92%);
-  transform: rotate(22deg) scale(1.05);
-} 
-
-@keyframes flip-hint {
-  0%,
-  84%,
-  100% {
-    transform: rotate(-18deg);
+    95% {
+      transform: rotate(-4deg);
+    }
   }
 
-  90% {
-    transform: rotate(18deg);
+  @media (prefers-reduced-motion: reduce) {
+    .smile-video-flip__inner,
+    .smile-video-flip__logo,
+    .smile-video-flip__play,
+    .smile-video-flip__arrow {
+      transition: none;
+      animation: none;
+    }
   }
-
-  95% {
-    transform: rotate(-4deg);
-  }
-}
-
-.smile-video-flip__hint {
-  animation: flip-hint 4.5s ease-in-out infinite;
-}
-
-.smile-video-flip__front:hover .smile-video-flip__hint,
-.smile-video-flip__front:focus-visible .smile-video-flip__hint {
-  animation: none;
-} 
-
-.smile-video-flip__back-arrow {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 3;
-
-  display: grid;
-  width: 2.6rem;
-  height: 2.6rem;
-  place-items: center;
-
-  border: 1px solid rgb(255 255 255 / 40%);
-  border-radius: 999px;
-
-  color: white;
-  font-size: 1.35rem;
-  line-height: 1;
-
-  background: rgb(0 0 0 / 60%);
-  box-shadow: 0 6px 18px rgb(0 0 0 / 20%);
-  cursor: pointer;
-
-  transition:
-    transform 180ms ease,
-    background-color 180ms ease;
-}
-
-.smile-video-flip__back-arrow:hover {
-  background: rgb(0 0 0 / 82%);
-  transform: rotate(-12deg) scale(1.06);
-}
-
-.smile-video-flip__back-arrow:focus-visible {
-  outline: 3px solid white;
-  outline-offset: 2px;
-}
 </style>
 
 <script>
@@ -376,19 +327,14 @@ const thumbnailUrl =
 
       const openButton =
         card.querySelector<HTMLButtonElement>("[data-open-card]");
-
       const closeButton =
         card.querySelector<HTMLButtonElement>("[data-close-card]");
-
       const playButton =
         card.querySelector<HTMLButtonElement>("[data-play-video]");
-
       const videoFace =
         card.querySelector<HTMLElement>("[data-video-face]");
-
       const playerContainer =
         card.querySelector<HTMLElement>("[data-player-container]");
-
       const iframe =
         card.querySelector<HTMLIFrameElement>("[data-youtube-player]");
 
@@ -417,7 +363,6 @@ const thumbnailUrl =
       const playVideo = () => {
         iframe.src =
           `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
-
         playButton.hidden = true;
         playerContainer.hidden = false;
       };
@@ -426,7 +371,6 @@ const thumbnailUrl =
         card.classList.remove("is-open");
         openButton.setAttribute("aria-expanded", "false");
         videoFace.setAttribute("aria-hidden", "true");
-
         iframe.src = "";
         playerContainer.hidden = true;
         playButton.hidden = false;
@@ -450,5 +394,3 @@ const thumbnailUrl =
       });
     });
 </script>
-
-
