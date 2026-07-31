@@ -1,6 +1,19 @@
 # Readme
 
-Thank you for downloading this template. To get started, open Help Docs link to read the instructions on the documentation. The main project files are located in the _astroship_ folder.
+# Der Smile Chor Website
+
+This repository contains:
+
+- `astroship/` – the Astro website source.
+- `docs/` – documentation for maintaining and updating the website.
+
+## Development
+
+```bash
+cd astroship
+npm install
+npm run dev
+```
 
 ## License
 
