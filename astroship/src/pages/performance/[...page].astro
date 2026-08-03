@@ -327,7 +327,10 @@ const { page } = Astro.props;
 
       let currentIndex = 0;
 
-      function showSlide(index: number) {
+      function showSlide(
+        index: number,
+        scrollThumbnail = false,
+      ) {
         if (slides.length === 0) return;
 
         /*
@@ -376,13 +379,13 @@ const { page } = Astro.props;
              * Keep the selected thumbnail visible when
              * the thumbnail strip is horizontally scrollable.
              */
-            if (isActive) {
-              thumbnail.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-                inline: "nearest",
-              });
-            }
+                 if (isActive && scrollThumbnail) {
+            thumbnail.scrollIntoView({
+              behavior: "smooth",
+              block: "nearest",
+              inline: "nearest",
+            });
+          }
           },
         );
 
@@ -393,24 +396,24 @@ const { page } = Astro.props;
         }
       }
 
-      previousButton?.addEventListener("click", () => {
-        showSlide(currentIndex - 1);
-      });
+     previousButton?.addEventListener("click", () => {
+      showSlide(currentIndex - 1, true);
+    });
 
-      nextButton?.addEventListener("click", () => {
-        showSlide(currentIndex + 1);
-      });
+    nextButton?.addEventListener("click", () => {
+      showSlide(currentIndex + 1, true);
+    });
 
       thumbnails.forEach((thumbnail) => {
-        thumbnail.addEventListener("click", () => {
-          const requestedIndex = Number(
-            thumbnail.dataset.slideNumber,
-          );
+    thumbnail.addEventListener("click", () => {
+      const requestedIndex = Number(
+        thumbnail.dataset.slideNumber,
+      );
 
-          if (Number.isNaN(requestedIndex)) return;
+      if (Number.isNaN(requestedIndex)) return;
 
-          showSlide(requestedIndex);
-        });
+      showSlide(requestedIndex, true);
+    });
       });
 
       /*
@@ -420,12 +423,12 @@ const { page } = Astro.props;
       gallery.addEventListener("keydown", (event) => {
         if (event.key === "ArrowLeft") {
           event.preventDefault();
-          showSlide(currentIndex - 1);
+          showSlide(currentIndex - 1, true);
         }
 
         if (event.key === "ArrowRight") {
           event.preventDefault();
-          showSlide(currentIndex + 1);
+          showSlide(currentIndex + 1, true);
         }
       });
 
@@ -443,6 +446,29 @@ const performanceCards =
   );
 
 if (performanceRow) {
+requestAnimationFrame(() => {
+  performanceRow.scrollLeft = 0;
+});
+performanceCards.forEach((card) => {
+  card.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+
+    // Do not hijack clicks on slideshow controls, links, or thumbnails.
+    if (
+      target.closest(
+        "button, a, iframe, [data-thumbnail], [data-previous-slide], [data-next-slide]",
+      )
+    ) {
+      return;
+    }
+
+    card.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  });
+});
   const performanceObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
