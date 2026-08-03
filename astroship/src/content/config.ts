@@ -29,7 +29,7 @@ const performanceCollection = defineCollection({
     }),
 });
 
-const teamCollection = defineCollection({
+const aboutCollection = defineCollection({
   schema: ({ image }) =>
     z.object({
       draft: z.boolean(),
@@ -69,6 +69,6 @@ const locationCollection = defineCollection({
 
 export const collections = {
   performance: performanceCollection,
-  team: teamCollection,
+  about: aboutCollection,
   location: locationCollection
 };

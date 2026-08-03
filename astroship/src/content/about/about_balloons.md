@@ -3,8 +3,8 @@ draft: false
 name: ""
 title: ""
 avatar: {
-    src: assets/performance/summer_2026/summer_2026_1.jpg,
-    alt: "summer_2026_1"
+    src: assets/about/about_balloons.jpg,
+    alt: "about_balloons"
 }
 publishDate: "2022-11-08 15:39"
 ---
