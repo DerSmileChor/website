@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Winter 2025"
+title: "Winter Season"
 snippet: "It was so much fun to be able to celebrate the holiday season with performances at the Kinderklinik im Dr. von Haunerschen Kinderspital, Klinikum Dritter Orden, Caritas Altenheim St. Franziskus, Erstanlaufstelle für ukrainische Geflüchtete, Haus am Wiesenweg, Dezentrale Unterkunft für Geflüchtete aus der Ukraine and Evangelisches Pflegezentrum Westend"
 image:
   src: ../../assets/performance/winter_2025/winter_gifts.jpg
@@ -22,7 +22,7 @@ gallery:
 
 publishDate: "2025-12-11 19:30"
 author: "Der Smile Chor"
-category: "Winter Concert"
+category: "2025"
 tags:
   - "winter"
   - "2025"

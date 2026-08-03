@@ -1,6 +1,6 @@
 ---
 draft: false
-title: "Winter Concert"
+title: "Winter Season"
 snippet: "Winter 2024 came with many balloons, smiles and even reindeer!"
 image:
   src: ../../assets/performance/winter_2024/winter_hospital.jpg
