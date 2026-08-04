@@ -59,6 +59,9 @@ h4 {
   color: var(--page-accent);
 }
 
+.accent-bg {
+  background-color: var(--page-accent);
+}
 .accent-background {
   background-color: var(--page-accent);
 }
