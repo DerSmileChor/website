@@ -2,6 +2,17 @@
 import { Picture } from "astro:assets";
 import heroImage from "assets/logo1_transparent.png";
 import SmileVideoFlip from "@components/SmileVideoFlip.astro";
+
+interface Props {
+  hero: {
+    heading: string;
+    description: string;
+    videoId: string;
+    videoTitle: string;
+  };
+}
+
+const { hero } = Astro.props;
 ---
 
 <main
@@ -12,10 +23,10 @@ import SmileVideoFlip from "@components/SmileVideoFlip.astro";
 >
   <!-- Desktop image -->
   <div class="hidden w-full md:order-1 md:block md:py-6">
-    <SmileVideoFlip
-      videoId="axlaeY91HDw"
-      videoTitle="Der Smile Chor performance"
-    >
+  <SmileVideoFlip
+  videoId={hero.videoId}
+  videoTitle={hero.videoTitle}
+>
       <Picture
         slot="logo"
         src={heroImage}
@@ -45,7 +56,7 @@ import SmileVideoFlip from "@components/SmileVideoFlip.astro";
              lg:text-6xl lg:tracking-tight
              xl:text-7xl xl:tracking-tighter"
     >
-      Der Smile Chor
+      {hero.heading}
     </h1>
 
     <!-- Mobile-only accent -->
@@ -59,11 +70,7 @@ import SmileVideoFlip from "@components/SmileVideoFlip.astro";
              sm:text-2xl
              md:mt-4 md:text-lg md:leading-relaxed"
     >
-      Der Smile Chor is an amateur English-language choir driven by the
-      conviction that music can open hearts and bring people together.
-      Through popular songs which everyone can hum or sing along to, we aim
-      to put a smile on people's faces precisely where it is needed most:
-      care homes for the elderly, refugee shelters, and hospitals.
+       {hero.description}
     </p>
 
     <!-- Mobile-only buttons -->

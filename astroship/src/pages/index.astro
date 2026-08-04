@@ -1,15 +1,29 @@
 ---
 import Container from "@components/container.astro";
-import Cta from "@components/cta.astro";
 import Features from "@components/features.astro";
 import Hero from "@components/hero.astro";
 import Logos from "@components/logos.astro";
 import Layout from "@layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const pages = await getCollection("pages");
+console.log("Page IDs:", pages.map((entry) => entry.id));
+const home = pages.find((entry) => entry.id === "home.md");
+
+if (!home) {
+  throw new Error(
+    "Homepage content not found. Expected src/content/pages/home.md",
+  );
+}
 ---
 
 <Layout title="">
   <Container>
-    <Hero />
-    <Features />
+    <Hero hero={home.data.hero} />
+
+<Features
+  intro={home.data.featuresIntro}
+  features={home.data.features}
+/>
   </Container>
 </Layout>

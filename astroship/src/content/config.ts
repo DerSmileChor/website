@@ -67,8 +67,37 @@ const locationCollection = defineCollection({
     }),
 });
 
+const pagesCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+
+    hero: z.object({
+      heading: z.string(),
+      description: z.string(),
+      videoId: z.string(),
+      videoTitle: z.string(),
+    }),
+
+    featuresIntro: z.object({
+      headingBeforeAccent: z.string(),
+      headingAccent: z.string(),
+      headingAfterAccent: z.string(),
+      description: z.string(),
+    }),
+
+    features: z.array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        icon: z.string(),
+      }),
+    ),
+  }),
+});
+
 export const collections = {
   performance: performanceCollection,
   about: aboutCollection,
-  location: locationCollection
+  location: locationCollection,
+  pages: pagesCollection
 };
