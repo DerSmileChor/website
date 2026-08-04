@@ -1,36 +1,18 @@
 ---
 import { getCollection } from "astro:content";
 import { Picture } from "astro:assets";
+import { marked } from "marked";
 
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 
-/*
- * Create paginated performance archive pages.
- *
- * Page 1: /performance/
- * Page 2: /performance/2/
- * Page 3: /performance/3/
- */
 export async function getStaticPaths({ paginate }) {
   const performances = await getCollection(
     "performance",
-    ({ data }) => {
-      /*
-       * During development, this displays every entry that is not a draft.
-       *
-       * To hide future performances later, change this to:
-       *
-       * return !data.draft && data.publishDate < new Date();
-       */
-      return !data.draft;
-    },
+    ({ data }) => !data.draft,
   );
 
-  /*
-   * Newest performances appear first.
-   */
   performances.sort((a, b) => {
     return (
       b.data.publishDate.valueOf() -
@@ -38,29 +20,52 @@ export async function getStaticPaths({ paginate }) {
     );
   });
 
-  /*
-   * Display three performances on each page.
-   */
   return paginate(performances, {
     pageSize: 3,
   });
 }
 
 const { page } = Astro.props;
+
+const pages = await getCollection("pages");
+
+const performancePage = pages.find(
+  (entry) => entry.data.pageType === "performance",
+);
+
+if (
+  !performancePage ||
+  performancePage.data.pageType !== "performance"
+) {
+  throw new Error(
+    "Performance page content not found. Expected src/content/pages/performance.md",
+  );
+}
+
+const {
+  title,
+  accent,
+  heading,
+  description,
+} = performancePage.data;
+
+const descriptionHtml = await marked.parse(description);
 ---
 
-<main style="--page-accent: var(--accent-performance);">
-<Layout title="Performances"
- accent="var(--accent-performance)">
+<main style={`--page-accent: ${accent};`}>
+  <Layout title={title} accent={accent}>
   <Container>
     <Sectionhead>
-      <Fragment slot="title"> Performances </Fragment>
+       <Fragment slot="title">
+    {heading}
+  </Fragment>
 
-      <Fragment slot="desc">
-        Der Smile Chor puts on a <span class = "accent-text">summer</span> and <span class = "accent-text">winter</span> performance every year.
-        <br />
-        <span class = "accent-text">Explore</span> photographs from our <span class = "accent-text">past performances</span> below.
-      </Fragment>
+  <Fragment slot="desc">
+    <div
+      class="performance-description"
+      set:html={descriptionHtml}
+    />
+  </Fragment>
     </Sectionhead>
 
     <main class="mt-16">
@@ -165,7 +170,7 @@ const { page } = Astro.props;
   </div>
 
   <!-- Performance title and information -->
-<header class="border-b border-indigo-100 bg-zinc-50 p-6 sm:p-8">
+<header class="performance-divider border-b bg-zinc-50 p-6 sm:p-8">
    <p class="accent-text text-sm font-medium uppercase tracking-wide">
       {performance.data.category}
     </p>
@@ -212,9 +217,17 @@ const { page } = Astro.props;
               data-thumbnail
               data-slide-number={index}
             class:list={[
-             "performance-thumbnail shrink-0 rounded-lg opacity-60 transition hover:opacity-100 focus:outline-none focus:ring-2",
+  `
+    performance-thumbnail
+    gallery-thumbnail
+    shrink-0 rounded-lg
+    border-2 border-transparent
+    opacity-60 transition
+    hover:opacity-100
+    focus:outline-none
+  `,
   {
-    "performance-thumbnail-active opacity-100 ring-2": index === 0,
+    "is-active opacity-100": index === 0,
   },
 ]}
               aria-label={`Show photo ${index + 1} of ${photos.length}`}
@@ -244,16 +257,19 @@ const { page } = Astro.props;
       <!-- Pagination -->
       {
         page.lastPage > 1 && (
-          <nav
-            class="mx-auto mt-20 grid max-w-5xl grid-cols-3 items-center gap-3 border-t border-indigo-100 pt-8"
-            aria-label="Performance archive pages"
-          >
+         <nav class=" performance-divider mx-auto mt-20 grid max-w-5xl grid-cols-3 items-center gap-3 border-t pt-8" aria-label="Performance archive pages">
             <div>
               {page.url.prev && (
-                <a
-                  href={page.url.prev}
-                  class="inline-flex items-center rounded-lg border border-indigo-200 px-4 py-2 font-medium text-indigo-700 transition hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
+              <a
+              href={page.url.prev}
+              class="
+                performance-nav
+                inline-flex items-center rounded-lg
+                border px-4 py-2 font-medium
+                accent-text transition
+                focus:outline-none focus:ring-2
+              "
+            >
                   <span aria-hidden="true">←</span>
                   <span class="ml-2 hidden sm:inline">
                     Newer performances
@@ -271,7 +287,12 @@ const { page } = Astro.props;
               {page.url.next && (
                 <a
                   href={page.url.next}
-                  class="inline-flex items-center rounded-lg border border-indigo-200 px-4 py-2 font-medium accent-border transition hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  class="
+    performance-nav
+    inline-flex items-center rounded-lg
+    border px-4 py-2 font-medium
+    transition focus:outline-none
+  "
                 >
                   <span class="mr-2 hidden sm:inline accent-text" >
                     Older performances
@@ -360,13 +381,9 @@ const { page } = Astro.props;
               isActive,
             );
 
-            thumbnail.classList.toggle(
-              "ring-2",
-              isActive,
-            );
 
             thumbnail.classList.toggle(
-              "ring-indigo-500",
+              "is-active",
               isActive,
             );
 
@@ -504,5 +521,117 @@ performanceCards.forEach((card) => {
   });
 }
 </script>
+
+<style>
+  .performance-description :global(strong) {
+    color: var(--page-accent);
+    font-weight: inherit;
+  }
+
+  .performance-description :global(p + p) {
+    margin-top: 0.5rem;
+  }
+
+  .performance-description :global(a) {
+    color: var(--page-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+    .performance-card {
+    border: 1px solid
+      color-mix(in srgb, var(--page-accent) 18%, white);
+  }
+
+  .performance-card:focus,
+  .performance-card:focus-within {
+    --tw-ring-color: var(--page-accent);
+  }
+
+    .performance-nav {
+    border-color: color-mix(
+      in srgb,
+      var(--page-accent) 28%,
+      transparent
+    );
+  }
+
+  .performance-nav:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--page-accent) 12%,
+      transparent
+    );
+  }
+
+  .performance-nav:focus-visible {
+    --tw-ring-color: var(--page-accent);
+  }
+
+    .performance-divider {
+    border-color: color-mix(
+      in srgb,
+      var(--page-accent) 18%,
+      transparent
+    );
+  }
+
+  .gallery-thumbnail {
+    border-style: solid;
+    border-color: transparent;
+  }
+
+  .gallery-thumbnail.is-active {
+    border-color: var(--page-accent);
+    box-shadow:
+      0 0 0 2px
+      color-mix(
+        in srgb,
+        var(--page-accent) 20%,
+        transparent
+      );
+  }
+
+  .gallery-thumbnail:hover:not(.is-active) {
+    border-color: color-mix(
+      in srgb,
+      var(--page-accent) 45%,
+      transparent
+    );
+  }
+
+  .gallery-thumbnail:focus-visible {
+    outline: 3px solid var(--page-accent);
+    outline-offset: 2px;
+  }
+  }
+
+  .gallery-thumbnail:focus-visible {
+    outline: 3px solid var(--page-accent);
+    outline-offset: 2px;
+  }
+
+  .performance-nav {
+    color: var(--page-accent);
+    border-color: color-mix(
+      in srgb,
+      var(--page-accent) 30%,
+      transparent
+    );
+  }
+
+  .performance-nav:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--page-accent) 12%,
+      transparent
+    );
+  }
+
+  .performance-nav:focus-visible {
+    outline: 3px solid var(--page-accent);
+    outline-offset: 3px;
+  }
+</style>
 
  
