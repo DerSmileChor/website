@@ -10,14 +10,22 @@ const pages = await getCollection("pages");
 console.log("Page IDs:", pages.map((entry) => entry.id));
 const home = pages.find((entry) => entry.id === "home.md");
 
+
+
 if (!home) {
   throw new Error(
     "Homepage content not found. Expected src/content/pages/home.md",
   );
 }
+
+const {
+title,
+  accent
+} = home.data;
 ---
 
-<Layout title="">
+<main style={`--page-accent: ${accent};`}>
+  <Layout title={title} accent={accent}>
   <Container>
     <Hero hero={home.data.hero} />
 
@@ -27,3 +35,4 @@ if (!home) {
 />
   </Container>
 </Layout>
+</main>
