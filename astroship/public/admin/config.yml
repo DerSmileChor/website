@@ -1,0 +1,741 @@
+local_backend: true
+
+backend:
+  name: "git-gateway"
+  branch: "main"
+
+media_folder: "astroship/src/assets/uploads"
+public_folder: "../../assets/uploads"
+
+collections:
+  - name: "pages"
+    label: "Pages"
+
+    files:
+      - name: "home"
+        label: "Homepage"
+        file: "astroship/src/content/pages/home.md"
+
+        fields:
+          - label: "Page type"
+            name: "pageType"
+            widget: "hidden"
+            default: "home"
+
+          - label: "Accent color"
+            name: "accent"
+            widget: "string"
+            default: "#4057e3"
+            pattern:
+              - "^#[0-9A-Fa-f]{6}$"
+              - "Enter a six-digit hex color beginning with #, for example #405DE6."
+            hint: "Choose a color at https://htmlcolorcodes.com and paste its six-digit hex code here, including the #."
+
+          - label: "Page title"
+            name: "title"
+            widget: "string"
+
+          - label: "Hero"
+            name: "hero"
+            widget: "object"
+            fields:
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+
+              - label: "Introduction"
+                name: "description"
+                widget: "text"
+
+              - label: "YouTube video ID"
+                name: "videoId"
+                widget: "string"
+                hint: "Enter only the video ID, not the full YouTube URL."
+
+              - label: "Video title"
+                name: "videoTitle"
+                widget: "string"
+                default: "Der Smile Chor performance"
+
+          - label: "Features introduction"
+            name: "featuresIntro"
+            widget: "object"
+            fields:
+              - label: "Heading before highlighted word"
+                name: "headingBeforeAccent"
+                widget: "string"
+
+              - label: "Highlighted word"
+                name: "headingAccent"
+                widget: "string"
+
+              - label: "Heading after highlighted word"
+                name: "headingAfterAccent"
+                widget: "string"
+
+              - label: "Description"
+                name: "description"
+                widget: "text"
+
+          - label: "Features"
+            name: "features"
+            widget: "list"
+            min: 1
+            summary: "{{fields.title}}"
+            fields:
+              - label: "Title"
+                name: "title"
+                widget: "string"
+
+              - label: "Description"
+                name: "description"
+                widget: "text"
+
+              - label: "Icon"
+                name: "icon"
+                widget: "select"
+                options:
+                  - { label: "Heart", value: "bx:bxs-heart" }
+                  - { label: "People", value: "bx:bxs-group" }
+                  - { label: "Microphone", value: "bx:bxs-microphone" }
+                  - { label: "Calendar", value: "bx:bxs-calendar" }
+                  - { label: "Smile", value: "bx:bxs-smile" }
+                  - { label: "Community", value: "bx:bxs-donate-heart" }
+                  - { label: "Music note", value: "bx:bxs-music" }
+                  - { label: "Volume", value: "bx:bxs-volume-full" }
+                  - { label: "User", value: "bx:bxs-user" }
+                  - { label: "Globe", value: "bx:bxs-world" }
+                  - { label: "Map", value: "bx:bxs-map" }
+                  - { label: "Home", value: "bx:bxs-home-heart" }
+                  - { label: "Leaf", value: "bx:bxs-leaf" }
+                  - { label: "Star", value: "bx:bxs-star" }
+                  - { label: "Sun", value: "bx:bxs-sun" }
+                  - { label: "Check", value: "bx:bxs-check-circle" }
+                  - { label: "Gift", value: "bx:bxs-gift" }
+                  - { label: "Medal", value: "bx:bxs-medal" }
+                  - { label: "Hand", value: "bx:bxs-hand" }
+                  - { label: "Building", value: "bx:bxs-building-house" }
+
+      - name: "join"
+        label: "Join Us"
+        file: "astroship/src/content/pages/join.md"
+        media_folder: "astroship/public/documents"
+        public_folder: "/documents"
+
+        fields:
+          - label: "Page type"
+            name: "pageType"
+            widget: "hidden"
+            default: "join"
+
+
+          - label: "Accent color"
+            name: "accent"
+            widget: "string"
+            default: "#BF3BD9"
+            pattern:
+              - "^#[0-9A-Fa-f]{6}$"
+              - "Enter a six-digit hex color beginning with #, for example #405DE6."
+            hint: "Choose a color at https://htmlcolorcodes.com and paste its six-digit hex code here, including the #."
+
+
+          - label: "Browser title"
+            name: "title"
+            widget: "string"
+
+          - label: "Page heading"
+            name: "heading"
+            widget: "string"
+            hint: "Use **double asterisks** around words that should appear in the page accent color."
+
+          - label: "Season information"
+            name: "seasonInfo"
+            widget: "object"
+            fields:
+              - label: "Section label"
+                name: "label"
+                widget: "string"
+
+              - label: "Text"
+                name: "content"
+                widget: "richtext"
+                buttons: ["bold", "italic", "link", "bulleted-list"]
+                editor_components: []
+                modes: ["rich_text", "raw"]
+                hint: "Use **double asterisks** around accent-colored words. Leave a blank line between paragraphs."
+
+          - label: "Roles"
+            name: "roles"
+            widget: "list"
+            min: 1
+            summary: "{{fields.role}}"
+            fields:
+              - { label: "Experience level", name: "experience", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+
+              - label: "Feature this role"
+                name: "featured"
+                widget: "boolean"
+                default: false
+                hint: "The featured role receives the emphasized card styling."
+
+              - label: "Who we are looking for"
+                name: "lookingFor"
+                widget: "list"
+                field:
+                  label: "Requirement"
+                  name: "requirement"
+                  widget: "string"
+
+              - label: "What to expect"
+                name: "expectations"
+                widget: "list"
+                field:
+                  label: "Expectation"
+                  name: "expectation"
+                  widget: "string"
+
+              - label: "Contact button"
+                name: "button"
+                widget: "object"
+                fields:
+                  - { label: "Button text", name: "text", widget: "string" }
+                  - { label: "Button link", name: "link", widget: "string", default: "/contact" }
+
+          - label: "Code of Conduct"
+            name: "codeOfConduct"
+            widget: "object"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Button text", name: "buttonText", widget: "string" }
+
+              - label: "Code of Conduct PDF"
+                name: "href"
+                widget: "file"
+                allow_multiple: false
+                hint: "Upload the current Code of Conduct PDF."
+
+      - name: "contact"
+        label: "Contact"
+        file: "astroship/src/content/pages/contact.md"
+        media_folder: "astroship/public/images"
+        public_folder: "/images"
+
+        fields:
+          - label: "Page type"
+            name: "pageType"
+            widget: "hidden"
+            default: "contact"
+
+          - label: "Accent color"
+            name: "accent"
+            widget: "string"
+            default: "#0b8f87"
+            pattern:
+            - "^#[0-9A-Fa-f]{6}$"
+            - "Enter a six-digit hex color beginning with #, for example #405DE6."
+            hint: "Choose a color at https://htmlcolorcodes.com and paste its six-digit hex code here, including the #."
+
+
+          - { label: "Browser title", name: "title", widget: "string" }
+
+          - label: "Page introduction"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "Heading", name: "heading", widget: "string" }
+              - label: "Description"
+                name: "description"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+          - label: "Contact information"
+            name: "contact"
+            widget: "object"
+            fields:
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+              - label: "Introduction"
+                name: "intro"
+                widget: "richtext"
+                buttons: ["bold", "italic", "link", "bulleted-list"]
+                editor_components: []
+                modes: ["rich_text", "raw"]
+                hint: "Use **double asterisks** for accent-colored words. Leave a blank line between paragraphs."
+
+              - { label: "Email address", name: "email", widget: "string" }
+
+          - label: "Social media"
+            name: "social"
+            widget: "object"
+            fields:
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+              - label: "Instagram"
+                name: "instagram"
+                widget: "object"
+                fields:
+                  - { label: "Button label", name: "label", widget: "string" }
+                  - { label: "Instagram URL", name: "url", widget: "string" }
+
+              - label: "Facebook"
+                name: "facebook"
+                widget: "object"
+                fields:
+                  - { label: "Button label", name: "label", widget: "string" }
+                  - { label: "Facebook URL", name: "url", widget: "string" }
+
+          - label: "Contact form"
+            name: "form"
+            widget: "object"
+            fields:
+              - { label: "Name placeholder", name: "namePlaceholder", widget: "string" }
+              - { label: "Missing-name message", name: "nameRequiredMessage", widget: "string" }
+              - { label: "Email placeholder", name: "emailPlaceholder", widget: "string" }
+              - { label: "Missing-email message", name: "emailRequiredMessage", widget: "string" }
+              - { label: "Invalid-email message", name: "emailInvalidMessage", widget: "string" }
+              - { label: "Message placeholder", name: "messagePlaceholder", widget: "string" }
+              - { label: "Missing-message message", name: "messageRequiredMessage", widget: "string" }
+              - { label: "Submit button text", name: "buttonText", widget: "string" }
+
+          - label: "Rehearsal location"
+            name: "location"
+            widget: "object"
+            fields:
+              - label: "Description"
+                name: "description"
+                widget: "richtext"
+                buttons: ["bold", "italic", "link"]
+                editor_components: []
+                modes: ["rich_text", "raw"]
+                hint: "Use **double asterisks** around accent-colored words. Leave a blank line between paragraphs."
+
+              - { label: "Map image", name: "image", widget: "image" }
+              - { label: "Image description", name: "imageAlt", widget: "string", hint: "Describe the image for screen-reader users." }
+              - { label: "Map button text", name: "mapButton", widget: "string" }
+              - { label: "Google Maps URL", name: "mapUrl", widget: "string" }
+
+      - name: "performance"
+        label: "Performances Page"
+        file: "astroship/src/content/pages/performance.md"
+
+        fields:
+          - label: "Page type"
+            name: "pageType"
+            widget: "hidden"
+            default: "performance"
+
+          - label: "Browser title"
+            name: "title"
+            widget: "string"
+
+          - label: "Accent color"
+            name: "accent"
+            widget: "string"
+            default: "#d92c8a"
+            pattern:
+              - "^#[0-9A-Fa-f]{6}$"
+              - "Enter a six-digit hex color beginning with #, for example #4f46e5."
+            hint: "Choose a color at https://htmlcolorcodes.com and paste its six-digit hex code here, including the #."
+
+          - label: "Page heading"
+            name: "heading"
+            widget: "string"
+
+          - label: "Introduction"
+            name: "description"
+            widget: "richtext"
+            buttons:
+              - "bold"
+              - "italic"
+              - "link"
+            editor_components: []
+            modes:
+              - "rich_text"
+              - "raw"
+            hint: "Use **double asterisks** around words that should appear in the page accent color."
+
+      - name: "about"
+        label: "About"
+        file: "astroship/src/content/pages/about.md"
+        media_folder: "astroship/src/assets/uploads"
+        public_folder: "../../assets/uploads"
+
+        fields:
+          - label: "Page type"
+            name: "pageType"
+            widget: "hidden"
+            default: "about"
+
+          - label: "Browser title"
+            name: "title"
+            widget: "string"
+
+          - label: "Accent color"
+            name: "accent"
+            widget: "string"
+            default: "#2563EB"
+            pattern:
+              - "^#[0-9A-Fa-f]{6}$"
+              - "Enter a six-digit hex color beginning with #, for example #2563EB."
+            hint: "Choose a color at https://htmlcolorcodes.com and paste its six-digit hex code here, including the #."
+
+          - label: "Page introduction"
+            name: "hero"
+            widget: "object"
+            fields:
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+                hint: "Use **double asterisks** around words that should appear in the accent color."
+
+              - label: "Description"
+                name: "description"
+                widget: "richtext"
+                buttons:
+                  - "bold"
+                  - "italic"
+                  - "link"
+                editor_components: []
+                modes:
+                  - "rich_text"
+                  - "raw"
+                hint: "Use **double asterisks** around words that should appear in the accent color."
+
+          - label: "Who We Are"
+            name: "whoWeAre"
+            widget: "object"
+            fields:
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+                hint: "Use **double asterisks** around words that should appear in the accent color."
+
+              - label: "Text"
+                name: "content"
+                widget: "richtext"
+                buttons:
+                  - "bold"
+                  - "italic"
+                  - "link"
+                  - "bulleted-list"
+                editor_components: []
+                modes:
+                  - "rich_text"
+                  - "raw"
+                hint: "Use **double asterisks** for accent-colored words. Leave a blank line between paragraphs."
+
+          - label: "People-section headings"
+            name: "peopleSections"
+            widget: "object"
+            fields:
+              - label: "General pictures heading"
+                name: "generalHeading"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+              - label: "Leadership heading"
+                name: "leadershipHeading"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+          - label: "Core Team"
+            name: "coreTeam"
+            widget: "object"
+            fields:
+              - label: "Show this section"
+                name: "enabled"
+                widget: "boolean"
+                default: false
+
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+              - label: "Description"
+                name: "description"
+                widget: "richtext"
+                required: false
+                buttons:
+                  - "bold"
+                  - "italic"
+                  - "link"
+                editor_components: []
+                modes:
+                  - "rich_text"
+                  - "raw"
+
+              - label: "Group photograph"
+                name: "image"
+                widget: "object"
+                required: false
+                fields:
+                  - label: "Image"
+                    name: "src"
+                    widget: "image"
+
+                  - label: "Image description"
+                    name: "alt"
+                    widget: "string"
+                    hint: "Describe the photograph for people using screen readers."
+
+          - label: "Where We’ve Been"
+            name: "whereWeHaveBeen"
+            widget: "object"
+            fields:
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+              - label: "Introduction"
+                name: "introduction"
+                widget: "richtext"
+                buttons:
+                  - "bold"
+                  - "italic"
+                  - "link"
+                editor_components: []
+                modes:
+                  - "rich_text"
+                  - "raw"
+
+              - label: "Locations visible initially"
+                name: "initialVisible"
+                widget: "number"
+                value_type: "int"
+                min: 1
+                default: 6
+
+              - label: "Locations"
+                name: "locations"
+                widget: "list"
+                field:
+                  label: "Location"
+                  name: "location"
+                  widget: "string"
+
+              - label: "Show-more text"
+                name: "showMoreText"
+                widget: "string"
+
+          - label: "Where We Come From"
+            name: "whereWeComeFrom"
+            widget: "object"
+            fields:
+              - label: "Heading"
+                name: "heading"
+                widget: "string"
+                hint: "Use **double asterisks** around accent-colored words."
+
+              - label: "Text"
+                name: "content"
+                widget: "richtext"
+                buttons:
+                  - "bold"
+                  - "italic"
+                  - "link"
+                editor_components: []
+                modes:
+                  - "rich_text"
+                  - "raw"
+                hint: "Use **double asterisks** around accent-colored words."
+
+              - label: "Image"
+                name: "image"
+                widget: "object"
+                required: false
+                fields:
+                  - label: "Image file"
+                    name: "src"
+                    widget: "image"
+
+                  - label: "Image description"
+                    name: "alt"
+                    widget: "string"
+
+                  - label: "Attribution"
+                    name: "attribution"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - label: "Show attribution"
+                        name: "enabled"
+                        widget: "boolean"
+                        default: false
+
+                      - label: "Creator"
+                        name: "creator"
+                        widget: "string"
+                        required: false
+
+                      - label: "Source name"
+                        name: "source"
+                        widget: "string"
+                        required: false
+
+                      - label: "Source URL"
+                        name: "url"
+                        widget: "string"
+                        required: false
+
+
+  - name: "about"
+    label: "About People"
+    label_singular: "About entry"
+    folder: "astroship/src/content/about"
+    create: true
+    extension: "md"
+    format: "frontmatter"
+
+    identifier_field: "entryId"
+    slug: "{{entryId}}"
+    summary: "{{entryId}} · {{group}} · {{name}}"
+
+    fields:
+      - label: "Entry ID"
+        name: "entryId"
+        widget: "string"
+        hint: "Enter a unique filename-friendly ID, such as conductor-maren, pianist-anna, or choir-photo-balloons. Use lowercase letters, numbers, and hyphens only."
+        pattern:
+          - "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          - "Use lowercase letters, numbers, and hyphens only."
+
+      - label: "Draft"
+        name: "draft"
+        widget: "boolean"
+        default: false
+
+      - label: "Section"
+        name: "group"
+        widget: "select"
+        options:
+          - label: "Conductor"
+            value: "conductor"
+
+          - label: "Pianists"
+            value: "pianists"
+
+          - label: "General choir picture"
+            value: "general"
+
+      - label: "Name"
+        name: "name"
+        widget: "string"
+        required: false
+        default: ""
+        hint: "For conductor or pianist entries. Leave empty for a general photograph."
+
+      - label: "Role"
+        name: "title"
+        widget: "string"
+        required: false
+        default: ""
+        hint: "For example: Conductor or Pianist. Leave empty for a general photograph."
+
+      - label: "Biography"
+        name: "biography"
+        widget: "text"
+        required: false
+        default: ""
+        hint: "Optional."
+
+      - label: "Photograph"
+        name: "image"
+        widget: "image"
+        required: false
+        hint: "Optional for conductors and pianists. Required for a general picture entry."
+
+      - label: "Image description"
+        name: "imageAlt"
+        widget: "string"
+        required: false
+        default: ""
+        hint: "Describe the photograph when one is provided."
+
+      - label: "Display order"
+        name: "order"
+        widget: "number"
+        value_type: "int"
+        default: 0
+        hint: "Lower numbers appear first within each section."
+
+      - label: "Publication date"
+        name: "publishDate"
+        widget: "datetime"
+        format: "YYYY-MM-DD HH:mm"
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+    
+
+  - name: "performance"
+    label: "Performances"
+    label_singular: "Performance"
+    folder: "astroship/src/content/performance"
+    create: true
+    summary: "{{category}} • {{title}}"
+    extension: "md"
+    format: "frontmatter"
+    slug: "{{year}}_{{month}}_{{day}}_{{slug}}"
+
+    fields:
+      - { label: "Draft", name: "draft", widget: "boolean", default: false }
+
+      - label: "Title"
+        name: "title"
+        widget: "select"
+        options:
+          - "Summer Season"
+          - "Winter Season"
+
+      - { label: "Description", name: "snippet", widget: "text" }
+
+      - label: "Cover image"
+        name: "image"
+        widget: "object"
+        fields:
+          - { label: "Image", name: "src", widget: "image" }
+          - label: "Image description"
+            name: "alt"
+            widget: "string"
+            hint: "Briefly describe the image for people using screen readers."
+
+      - label: "Gallery"
+        name: "gallery"
+        widget: "list"
+        required: false
+        default: []
+        fields:
+          - { label: "Image", name: "src", widget: "image" }
+          - label: "Alternative text"
+            name: "alt"
+            widget: "string"
+            hint: "Briefly describe the image."
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+
+      - label: "Publication date"
+        name: "publishDate"
+        widget: "datetime"
+        format: "YYYY-MM-DD HH:mm"
+        date_format: "DD.MM.YYYY"
+        time_format: "HH:mm"
+
+      - { label: "Author", name: "author", widget: "string", default: "Der Smile Chor" }
+
+      - label: "Year"
+        name: "category"
+        widget: "string"
+        hint: "Enter the year, for example 2025."
+        pattern:
+          - "^\\d{4}$"
+          - "Please enter a four-digit year."
+
+      - { label: "Tags", name: "tags", widget: "list", default: [] }
