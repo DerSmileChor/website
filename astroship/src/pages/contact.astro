@@ -4,170 +4,246 @@ import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import Layout from "@layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
+import { getCollection } from "astro:content";
+import { marked } from "marked";
+
+const pages = await getCollection("pages");
+
+const contactPage = pages.find(
+  (entry) => entry.data.pageType === "contact",
+);
+
+if (!contactPage || contactPage.data.pageType !== "contact") {
+  throw new Error(
+    "Contact page content not found. Expected src/content/pages/contact.md",
+  );
+}
+
+const {
+  title,
+  hero,
+  contact,
+  social,
+  form,
+  location,
+  accent
+} = contactPage.data;
+
+const heroDescriptionHtml = await marked.parseInline(
+  hero.description,
+);
+
+const contactHeadingHtml = await marked.parseInline(
+  contact.heading,
+);
+
+const contactIntroHtml = await marked.parse(contact.intro);
+
+const socialHeadingHtml = await marked.parseInline(
+  social.heading,
+);
+
+const locationHtml = await marked.parse(
+  location.description,
+);
 ---
+<main style={`--page-accent: ${accent};`}>
+  <Layout title={title} accent={accent}>
+    <Container>
+      <Sectionhead>
+        <Fragment slot="title">{hero.heading}</Fragment>
 
-<main style="--page-accent: var(--accent-contact);">
-<Layout title="Contact"
-accent="var(--accent-contact)">
-  <Container>
-    <Sectionhead>
-      <Fragment slot="title">Contact</Fragment>
-      <Fragment slot="desc">We'd love to <span class = "accent-text">connect</span> with you!</Fragment>
-    </Sectionhead>
+        <Fragment slot="desc">
+          <span
+            class="contact-markdown-inline"
+            set:html={heroDescriptionHtml}
+          />
+        </Fragment>
+      </Sectionhead>
 
-    <div
-      class="
-        mx-auto mt-10 grid max-w-4xl items-stretch gap-12
-        md:mt-14
-        lg:mt-16 lg:grid-cols-[320px_420px_320px] lg:gap-10
-      "
-    >
-      <!-- Column 1 -->
-      <div class="h-full">
-        <h2
-          class="
-            text-2xl font-semibold leading-tight text-gray-800
-            lg:text-2xl lg:font-medium
-          "
-        >
-        <span class = "accent-text">  Contact </span> Der Smile Chor
-        </h2>
-
-        <p
-          class="
-            mt-5 text-lg leading-relaxed text-slate-500
-            lg:mt-3
-          "
-        >
-          Whether you're interested in joining, booking us, or just saying
-          hello, we'd love to hear from you.
-        </p>
-
-        <p class="mt-2 text-lg leading-relaxed text-slate-500">
-          Fill out the form or send us an email.
-        </p>
-
-        <div class="mt-6">
-          <a
-            href="mailto:dersmilechor@gmail.com"
+      <div
+        class="
+          mx-auto mt-10 grid max-w-4xl items-stretch gap-12
+          md:mt-14
+          lg:mt-16 lg:grid-cols-[320px_420px_320px] lg:gap-10
+        "
+      >
+        <!-- Contact information -->
+        <div class="h-full">
+          <h2
             class="
-              flex items-center gap-3 text-lg text-gray-600
-              transition hover:text-indigo-700
+              text-2xl font-semibold leading-tight text-gray-800
+              lg:text-2xl lg:font-medium
             "
           >
-            <Icon
-              class="h-5 w-5 shrink-0 text-gray-400"
-              name="uil:envelope"
+            <span
+              class="contact-markdown-inline"
+              set:html={contactHeadingHtml}
             />
-
-            <span class="break-all">
-              dersmilechor@gmail.com
-            </span>
-          </a>
-        </div>
-
-        <div class="mt-10 border-t border-slate-200 pt-8">
-          <h2 class="text-2xl font-semibold leading-tight lg:text-2xl">
-            <span class = "accent-text">Follow</span> the choir
           </h2>
 
           <div
             class="
-              mt-5 grid grid-cols-1 gap-3
-              sm:grid-cols-2
-              lg:flex lg:flex-wrap lg:gap-4
+              contact-copy mt-5 text-lg
+              leading-relaxed text-slate-500 lg:mt-3
             "
-          >
-            <a
-              href="https://www.instagram.com/dersmilechor/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="
-                inline-flex w-full items-center justify-center gap-3
-                rounded-lg border border-slate-300 px-5 py-3 accent-text
-                font-medium transition hover:bg-slate-50
-                lg:w-auto lg:justify-start lg:rounded-md lg:py-3
-              "
-            >
-              <Icon name="bx:bxl-instagram" class="h-6 w-6 lg:h-5 lg:w-5" />
-              Instagram
-            </a>
+            set:html={contactIntroHtml}
+          />
 
+          <div class="mt-6">
             <a
-              href="https://www.facebook.com/share/16JrA3sF4V/"
-              target="_blank"
-              rel="noopener noreferrer"
+              href={`mailto:${contact.email}`}
               class="
-                inline-flex w-full items-center justify-center gap-3 accent-text
-                rounded-lg border border-slate-300 px-5 py-3
-                font-medium transition hover:bg-slate-50
-                lg:w-auto lg:justify-start lg:rounded-md lg:py-3
+                flex items-center gap-3 text-lg text-gray-600
+                transition hover:text-indigo-700
               "
             >
               <Icon
-                name="bx:bxl-facebook-circle"
-                class="h-6 w-6 lg:h-5 lg:w-5"
+                class="h-5 w-5 shrink-0 text-gray-400"
+                name="uil:envelope"
               />
-              Facebook
+
+              <span class="break-all">
+                {contact.email}
+              </span>
+            </a>
+          </div>
+
+          <div class="mt-10 border-t border-slate-200 pt-8">
+            <h2
+              class="
+                text-2xl font-semibold
+                leading-tight lg:text-2xl
+              "
+            >
+              <span
+                class="contact-markdown-inline"
+                set:html={socialHeadingHtml}
+              />
+            </h2>
+
+            <div
+              class="
+                mt-5 grid grid-cols-1 gap-3
+                sm:grid-cols-2
+                lg:flex lg:flex-wrap lg:gap-4
+              "
+            >
+              <a
+                href={social.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="
+                  inline-flex w-full items-center justify-center
+                  gap-3 rounded-lg border border-slate-300
+                  px-5 py-3 font-medium accent-text
+                  transition hover:bg-slate-50
+                  lg:w-auto lg:justify-start
+                  lg:rounded-md lg:py-3
+                "
+              >
+                <Icon
+                  name="bx:bxl-instagram"
+                  class="h-6 w-6 lg:h-5 lg:w-5"
+                />
+                {social.instagram.label}
+              </a>
+
+              <a
+                href={social.facebook.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="
+                  inline-flex w-full items-center justify-center
+                  gap-3 rounded-lg border border-slate-300
+                  px-5 py-3 font-medium accent-text
+                  transition hover:bg-slate-50
+                  lg:w-auto lg:justify-start
+                  lg:rounded-md lg:py-3
+                "
+              >
+                <Icon
+                  name="bx:bxl-facebook-circle"
+                  class="h-6 w-6 lg:h-5 lg:w-5"
+                />
+                {social.facebook.label}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact form -->
+        <div class="h-full">
+          <Contactform content={form} />
+        </div>
+
+        <!-- Rehearsal location -->
+        <div
+          class="
+            flex h-full flex-col overflow-hidden
+            rounded-xl border border-slate-200
+            lg:rounded-lg
+          "
+        >
+          <div
+            class="
+              location-copy px-5 py-5 text-center
+              text-base leading-relaxed text-slate-600
+              lg:px-4 lg:py-4 lg:text-sm
+            "
+            set:html={locationHtml}
+          />
+
+          <img
+            src={location.image}
+            alt={location.imageAlt}
+            class="
+              h-64 w-full object-cover
+              lg:min-h-0 lg:flex-1
+            "
+          />
+
+          <div class="p-4">
+            <a
+              href={location.mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="
+                flex w-full justify-center rounded-lg
+                accent-background px-4 py-3
+                font-medium text-white transition
+                hover:bg-blue-700 lg:rounded lg:py-2
+              "
+            >
+              {location.mapButton}
             </a>
           </div>
         </div>
       </div>
-
-      <!-- Column 2 -->
-      <div class="h-full">
-        <Contactform />
-      </div>
-
-      <!-- Column 3 -->
-      <div
-        class="
-          flex h-full flex-col overflow-hidden
-          rounded-xl border border-slate-200
-          lg:rounded-lg
-        "
-      >
-        <p
-          class="
-            px-5 py-5 text-center text-base leading-relaxed text-slate-600
-            lg:px-4 lg:py-4 lg:text-sm
-          "
-        >
-          We rehearse every Tuesday evening at the
-          <br />
-          <strong><span class = "accent-text">EineWeltHaus </span></strong>
-          <br />
-          Schwanthalerstraße 80
-          <br />
-          80336 Munich
-        </p>
-
-        <img
-          src="/images/einwelthaus.png"
-          alt="Map showing the rehearsal location"
-          class="
-            h-64 w-full object-cover
-            lg:min-h-0 lg:flex-1
-          "
-        />
-
-        <div class="p-4">
-          <a
-            href="https://maps.app.goo.gl/ps78sSpPPjc72vk1A"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="
-              flex w-full justify-center rounded-lg
-              accent-background px-4 py-3 font-medium text-white
-              transition hover:bg-blue-700
-              lg:rounded lg:py-2
-            "
-          >
-            Open in Google Maps
-          </a>
-        </div>
-      </div>
-    </div>
-  </Container>
-</Layout>
+    </Container>
+  </Layout>
 </main>
+
+<style>
+  .contact-markdown-inline :global(strong),
+  .contact-copy :global(strong),
+  .location-copy :global(strong) {
+    color: var(--page-accent);
+    font-weight: inherit;
+  }
+
+  .contact-copy :global(p + p) {
+    margin-top: 0.5rem;
+  }
+
+  .location-copy :global(p + p) {
+    margin-top: 0.35rem;
+  }
+
+  .contact-copy :global(a),
+  .location-copy :global(a) {
+    color: var(--page-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+</style>
