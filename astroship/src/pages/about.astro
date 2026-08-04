@@ -1,294 +1,610 @@
 ---
 import { getCollection } from "astro:content";
 import { Picture } from "astro:assets";
+import { marked } from "marked";
+import { Icon } from "astro-icon/components";
+
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
-import { Icon } from "astro-icon/components";
 
-// Filter entries with draft: false and a date before the current date
-const publishedAboutPage = await getCollection("about", ({ data }) => {
-  return !data.draft && data.publishDate < new Date();
+const pages = await getCollection("pages");
+
+const aboutPage = pages.find(
+  (entry) => entry.data.pageType === "about",
+);
+
+if (!aboutPage || aboutPage.data.pageType !== "about") {
+  throw new Error(
+    "About page content not found. Expected src/content/pages/about.md",
+  );
+}
+
+const people = await getCollection(
+  "about",
+  ({ data }) =>
+    !data.draft &&
+    data.publishDate < new Date(),
+);
+
+people.sort((a, b) => {
+  return a.data.order - b.data.order;
 });
 
-const publishedLocation = await getCollection("location", ({ data }) => {
-  return !data.draft && data.publishDate < new Date();
-});
+const leadership = people.filter(
+  (person) =>
+    person.data.group === "conductor" ||
+    person.data.group === "pianists",
+);
 
-const locations = [
-  "Haus für Mutter und Kind des Paritätischen Wohlfahrtsverbandes",
-  "Flexiheim am Krautgarten",
-  'Städt. Notquartier "Am Hollerbusch"',
-  "Münchenstift Haus an der Effnerstraße",
-  "Seniorenzentrum Martha-Maria München",
-  "Haus am Wiesenweg Seniorenzentrum Pullach",
-  "Flüchtlingsunterkunft in der Meindlstraße 14a",
-  "Erstanlaufstelle für ukrainische Geflüchtete in der Dachauer Str.",
-  "Dezentrale Flüchtlingsunterkunft – Schatzbogen",
-  "Kinderklinik und Kinderpoliklinik im Dr. von Haunerschen Kinderspital",
-  "Kinderklinik im Klinikum Dritter Orden",
-  "Damenstift am Luitpoldpark",
-  "Caritas Altenheim St. Franziskus",
-  "Das Ronald McDonald Haus am Deutschen Herzzentrum",
-  "Evangelisches Pflegezentrum Westend",
+const generalPictures = people.filter(
+  (person) => person.data.group === "general",
+);
+
+ 
+const {
+  title,
+  accent,
+  hero,
+  whoWeAre,
+  peopleSections,
+  coreTeam,
+  whereWeHaveBeen,
+  whereWeComeFrom,
+} = aboutPage.data;
+
+const heroHeadingHtml =
+  await marked.parseInline(hero.heading);
+
+const heroDescriptionHtml =
+  await marked.parse(hero.description);
+
+const whoWeAreHeadingHtml =
+  await marked.parseInline(whoWeAre.heading);
+
+const whoWeAreHtml =
+  await marked.parse(whoWeAre.content);
+
+const generalHeadingHtml =
+  await marked.parseInline(
+    peopleSections.generalHeading,
+  );
+
+const leadershipHeadingHtml =
+  await marked.parseInline(
+    peopleSections.leadershipHeading,
+  );
+
+const coreTeamHeadingHtml =
+  await marked.parseInline(coreTeam.heading);
+
+const coreTeamDescriptionHtml =
+  await marked.parse(coreTeam.description);
+
+const whereWeHaveBeenHeadingHtml =
+  await marked.parseInline(
+    whereWeHaveBeen.heading,
+  );
+
+const whereWeHaveBeenIntroHtml =
+  await marked.parse(
+    whereWeHaveBeen.introduction,
+  );
+
+const whereWeComeFromHeadingHtml =
+  await marked.parseInline(
+    whereWeComeFrom.heading,
+  );
+
+const whereWeComeFromHtml =
+  await marked.parse(
+    whereWeComeFrom.content,
+  );
+
+const initiallyVisibleLocations =
+  whereWeHaveBeen.locations.slice(
+    0,
+    whereWeHaveBeen.initialVisible,
+  );
+
+const additionalLocations =
+  whereWeHaveBeen.locations.slice(
+    whereWeHaveBeen.initialVisible,
+  );
+
+const peopleGroups = [
+  {
+    type: "gallery",
+    headingHtml: generalHeadingHtml,
+    people: generalPictures,
+  },
+  {
+    type: "people",
+    headingHtml: leadershipHeadingHtml,
+    people: leadership,
+  },
 ];
 ---
-<main style="--page-accent: var(--accent-about);">
-<Layout title="About"
-  accent="var(--accent-about)"
+
+<main style={`--page-accent: ${accent};`}>
+  <Layout title={title} accent={accent}>
+    <Container>
+      <Sectionhead>
+        <Fragment slot="title">
+          <span
+            class="
+              about-inline-markdown
+              block text-5xl font-bold
+              leading-[1.05] tracking-tight
+              lg:text-5xl
+            "
+            set:html={heroHeadingHtml}
+          />
+        </Fragment>
+
+        <Fragment slot="desc">
+          <div
+            class="about-copy"
+            set:html={heroDescriptionHtml}
+          />
+        </Fragment>
+      </Sectionhead>
+
+      <!-- Who We Are -->
+     <section class="mx-auto mt-16 max-w-4xl md:mt-24">
+        <h2
+          class="
+            about-inline-markdown
+            text-3xl font-bold leading-tight
+            text-gray-800 md:text-4xl
+          "
+          set:html={whoWeAreHeadingHtml}
+        />
+
+        <div
+          class="
+            about-copy mt-5
+            text-lg leading-[1.75]
+            text-slate-500 md:text-xl
+          "
+          set:html={whoWeAreHtml}
+        />
+      </section>
+
+      <!-- Conductor and pianists -->
+ {
+  peopleGroups.map(
+    ({ headingHtml, people, type }) =>
+      people.length > 0 && (
+<section class="mx-auto mt-16 max-w-4xl md:mt-24">
+          <h2
+            class="
+              about-inline-markdown
+              text-3xl font-bold
+              leading-tight text-gray-800
+              md:text-4xl
+            "
+            set:html={headingHtml}
+          />
+
+          {
+            type === "gallery" ? (
+            <div class="mt-8 grid gap-8 md:grid-cols-3">
+                {
+                  people.map(
+                    (person) =>
+                      person.data.image && (
+                        <figure class="group">
+                         <Picture
+                            src={person.data.image}
+                            alt={person.data.imageAlt}
+                            widths={[400, 600, 900]}
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            width={900}
+                            height={900}
+                            class="
+                              aspect-square w-full
+                              rounded-xl object-cover
+                              transition
+                              group-hover:-translate-y-1
+                              group-hover:shadow-xl
+                            "
+                          />
+                          {
+                            (
+                              person.data.name ||
+                              person.data.title ||
+                              person.data.biography
+                            ) && (
+                              <figcaption class="mt-3 text-center">
+                                {
+                                  person.data.name && (
+                                    <h3
+                                      class="
+                                        font-semibold
+                                        text-gray-800
+                                      "
+                                    >
+                                      {person.data.name}
+                                    </h3>
+                                  )
+                                }
+
+                                {
+                                  person.data.title && (
+                                    <p class="mt-1 accent-text">
+                                      {person.data.title}
+                                    </p>
+                                  )
+                                }
+
+                                {
+                                  person.data.biography && (
+                                    <p
+                                      class="
+                                        mt-2 text-sm
+                                        leading-relaxed
+                                        text-slate-500
+                                      "
+                                    >
+                                      {person.data.biography}
+                                    </p>
+                                  )
+                                }
+                              </figcaption>
+                            )
+                          }
+                        </figure>
+                      ),
+                  )
+                }
+              </div>
+            ) : (
+           <ul
+  class="
+    mt-8 grid gap-6
+    sm:grid-cols-2
+    lg:grid-cols-4
+  "
 >
-  <Container>
-   <Sectionhead>
-  <Fragment slot="title">
-    <span
-    class="block text-5xl font-bold leading-[1.05] tracking-tight lg:text-5xl"
-
-    >
-      Changing the world one <span class = "accent-text">smile</span> at a time.
-    </span>
-  </Fragment>
-
-  <Fragment slot="desc">
-    Der Smile Chor is made up of singers from all around the world, united by
-    the conviction that music can bring joy and healing.
-  </Fragment>
-</Sectionhead>
-
-    <!-- Who We Are -->
-    <section class="mx-auto mt-16 max-w-4xl md:mt-24">
-      <h2
-        class="
-          text-3xl font-bold leading-tight text-gray-800
-          md:text-4xl" 
-
-      >
-      Who  We  <span class = "accent-text">Are</span>
-      </h2>
-
-      <div
-        class="
-          mt-5 space-y-5 text-lg leading-[1.75] text-slate-500
-          md:text-xl
-        "
-      >
-        <p>
-          All choir members volunteer their time and talents out of personal
-          motivation. Our performances are free of charge for the host
-          facilities, and we cover all expenses ourselves through private
-          contributions from our members.
-        </p>
-
-        <p>
-          We are not a formal association, but rather a community of people
-          dedicating their time, voices, and skills to bringing joy to others.
-          Our concerts are often accompanied by small gifts, such as balloons
-          or toys for children.
-        </p>
-      </div>
-    </section>
-
-    <!-- Team -->
-    <div
+                {
+                  people.map((person) => (
+                  <li
+  class="
+    leadership-card
+    min-w-0 rounded-xl
+    px-4 py-4
+  "
+>
+                     {
+  person.data.image && (
+    <Picture
+      src={person.data.image}
+      alt={person.data.imageAlt}
+      widths={[160, 240, 320]}
+      sizes="96px"
+      width={320}
+      height={320}
       class="
-        mx-auto mt-12 grid max-w-4xl gap-10
-        md:grid-cols-3
+        mx-auto mb-4 h-24 w-24
+        rounded-full object-cover
       "
-    >
+    />
+  )
+}
+                       {
+  person.data.name && (
+<h3 class="text-center text-lg font-semibold leading-tight text-gray-800">
+  {person.data.name}
+</h3>
+
+<p class="mt-1 text-center text-sm font-medium accent-text">
+  {person.data.title}
+</p>
+  )
+}
+
+{
+  person.data.biography && (
+    <p class="mt-3 leading-relaxed text-slate-500">
+      {person.data.biography}
+    </p>
+  )
+}
+                    </li>
+                  ))
+                }
+              </ul>
+            )
+          }
+        </section>
+      ),
+  )
+}
+
+      <!-- Core Team -->
       {
-        publishedAboutPage.map((AboutPageEntry) => (
-          <div class="group">
-            <div class="aspect-square w-full">
-              <Picture
-                src={AboutPageEntry.data.avatar.src}
-                alt={AboutPageEntry.data.avatar.alt}
-                sizes="(max-width: 800px) 100vw, 400px"
-                width={400}
-                height={400}
+        coreTeam.enabled && (
+          <section
+            class="
+              mx-auto mt-16 max-w-4xl
+              md:mt-24
+            "
+          >
+            <h2
+              class="
+                about-inline-markdown
+                text-3xl font-bold
+                leading-tight text-gray-800
+                md:text-4xl
+              "
+              set:html={coreTeamHeadingHtml}
+            />
+
+            {
+              coreTeam.description && (
+                <div
+                  class="
+                    about-copy mt-5
+                    text-lg leading-[1.75]
+                    text-slate-500 md:text-xl
+                  "
+                  set:html={coreTeamDescriptionHtml}
+                />
+              )
+            }
+
+            {
+              coreTeam.image && (
+                <Picture
+                  src={coreTeam.image.src}
+                  alt={coreTeam.image.alt}
+                  widths={[600, 900, 1200, 1600]}
+                  sizes="(max-width: 900px) 100vw, 900px"
+                  width={1600}
+                  height={1000}
+                  class="
+                    mt-8 w-full rounded-xl
+                    object-cover
+                  "
+                />
+              )
+            }
+          </section>
+        )
+      }
+
+      <!-- Where We’ve Been -->
+      <section class="mx-auto mt-16 max-w-4xl md:mt-24">
+        <div class="max-w-2xl">
+          <h2
+            class="
+              about-inline-markdown
+              text-3xl font-bold
+              leading-tight text-gray-800
+              md:text-4xl
+            "
+            set:html={whereWeHaveBeenHeadingHtml}
+          />
+
+          <div
+            class="
+              about-copy mt-5
+              text-lg leading-[1.75]
+              text-slate-500 md:text-xl
+            "
+            set:html={whereWeHaveBeenIntroHtml}
+          />
+        </div>
+
+        <ul class="mt-8 grid gap-x-10 md:grid-cols-2">
+          {
+            initiallyVisibleLocations.map(
+              (location) => (
+                <li
+                  class="
+                    flex items-start gap-3
+                    border-b border-slate-200
+                    px-2 py-4
+                  "
+                >
+                  <Icon
+                    name="bx:bxs-music"
+                    class="
+                      mt-1 h-5 w-5
+                      shrink-0 accent-text
+                    "
+                  />
+
+                  <span class="leading-relaxed">
+                    {location}
+                  </span>
+                </li>
+              ),
+            )
+          }
+        </ul>
+
+        {
+          additionalLocations.length > 0 && (
+            <details class="mb-16 mt-5 md:mb-24">
+              <summary
                 class="
-                  aspect-square w-full rounded-md bg-white
-                  object-cover object-center transition
+                  cursor-pointer font-medium
+                  accent-text transition
+                  hover:brightness-75
+                "
+              >
+                {whereWeHaveBeen.showMoreText}
+              </summary>
+
+              <ul class="mt-4 grid gap-x-10 md:grid-cols-2">
+                {
+                  additionalLocations.map(
+                    (location) => (
+                      <li
+                        class="
+                          flex items-start gap-3
+                          border-b border-slate-200
+                          px-2 py-4
+                        "
+                      >
+                        <Icon
+                          name="bx:bxs-music"
+                          class="
+                            mt-1 h-5 w-5
+                            shrink-0 accent-text
+                          "
+                        />
+
+                        <span class="leading-relaxed">
+                          {location}
+                        </span>
+                      </li>
+                    ),
+                  )
+                }
+              </ul>
+            </details>
+          )
+        }
+      </section>
+
+      <!-- Where We Come From -->
+      <section class="mx-auto max-w-4xl">
+        <h2
+          class="
+            about-inline-markdown
+            text-3xl font-bold
+            leading-tight text-gray-800
+            md:text-4xl
+          "
+          set:html={whereWeComeFromHeadingHtml}
+        />
+
+        <div
+          class="
+            about-copy mt-5
+            text-lg leading-[1.75]
+            text-slate-500 md:text-xl
+          "
+          set:html={whereWeComeFromHtml}
+        />
+
+        {
+          whereWeComeFrom.image && (
+            <figure
+              class="
+                group mx-auto mt-12
+                w-full max-w-xl md:w-3/4
+              "
+            >
+              <Picture
+                src={whereWeComeFrom.image.src}
+                alt={whereWeComeFrom.image.alt}
+                widths={[600, 900, 1200]}
+                sizes="(max-width: 768px) 100vw, 800px"
+                width={1200}
+                height={1200}
+                class="
+                  block h-auto w-full
+                  rounded-xl bg-white
+                  object-cover object-center
+                  transition
                   group-hover:-translate-y-1
                   group-hover:shadow-xl
                 "
               />
-            </div>
 
-            <div class="mt-4 text-center">
-              <h2 class="text-lg text-gray-800">
-                {AboutPageEntry.data.name}
-              </h2>
-
-              <h3 class="text-sm text-slate-500">
-                {AboutPageEntry.data.title}
-              </h3>
-            </div>
-          </div>
-        ))
-      }
-    </div>
-
-    <!-- Where We've Been -->
-    <section class="mx-auto mt-16 max-w-4xl md:mt-24">
-      <div class="max-w-2xl">
-        <h2
-          class="
-            text-3xl font-bold leading-tight text-gray-800
-            md:text-4xl
-          "
-        >
-          Where  We’ve <span class = "accent-text">Been</span>
-        </h2>
-
-        <p
-          class="
-            mt-5 text-lg leading-[1.75] text-slate-500
-            md:text-xl
-          "
-        >
-          We have performed at numerous locations around the Munich area,
-          including community centres, care homes, shelters, and hospitals.
-        </p>
-      </div>
-
-      <ul class="mt-8 grid gap-x-10 md:grid-cols-2">
-        {
-          locations.slice(0, 6).map((location) => (
-            <li
-              class="
-                flex items-start gap-3 border-b border-slate-200
-                px-2 py-4
-              "
-            >
-              <Icon
-                name="bx:bxs-music"
-                class="mt-1 h-5 w-5 shrink-0 accent-text"
-              />
-
-              <span class="leading-relaxed">
-                {location}
-              </span>
-            </li>
-          ))
+              {
+                whereWeComeFrom.image
+                  .attribution?.enabled && (
+                  <figcaption
+                    class="
+                      mt-3 text-center text-xs
+                      leading-relaxed text-slate-500
+                    "
+                  >
+                    Image by{" "}
+                    {
+                      whereWeComeFrom.image
+                        .attribution.creator
+                    }
+                    , available from{" "}
+                    <a
+                      href={
+                        whereWeComeFrom.image
+                          .attribution.url
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="
+                        font-medium accent-text
+                        underline underline-offset-2
+                        transition hover:brightness-75
+                      "
+                    >
+                      {
+                        whereWeComeFrom.image
+                          .attribution.source
+                      }
+                    </a>
+                  </figcaption>
+                )
+              }
+            </figure>
+          )
         }
-      </ul>
-
-      <details class="mb-16 mt-5 md:mb-24">
-        <summary
-          class="
-            cursor-pointer font-medium accent-text
-            hover:text-blue-700
-          "
-        >
-          Show more locations
-        </summary>
-
-        <ul class="mt-4 grid gap-x-10 md:grid-cols-2">
-          {
-            locations.slice(6).map((location) => (
-              <li
-                class="
-                  flex items-start gap-3 border-b border-slate-200
-                  px-2 py-4
-                "
-              >
-                <Icon
-                  name="bx:bxs-music"
-                  class="mt-1 h-5 w-5 shrink-0 accent-text"
-                />
-
-                <span class="leading-relaxed">
-                  {location}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-      </details>
-    </section>
-
-    <!-- Where We Come From -->
-    <section class="mx-auto max-w-4xl">
-      <h2
-        class="
-          text-3xl font-bold leading-tight text-gray-800
-          md:text-4xl
-        "
-      >
-        Where We  <span class="accent-text">Come</span> From
-      </h2>
-
-      <div
-        class="
-          mt-5 space-y-5 text-lg leading-[1.75] text-slate-500
-          md:text-xl
-        "
-      >
-        <p>
-          A distinctive feature of “Smile” is our international community.
-          Many of our members come from outside Germany and have found a
-          common language through music.
-        </p>
-
-        <p>
-          We sing primarily well-known songs in English. This allows people
-          who do not yet speak German to get involved, become part of the
-          local community, and actively give something back.
-        </p>
-
-        <p>
-          No prior musical experience is required—just openness and a love
-          for participating together. “Smile” naturally combines music,
-          integration, and human connection.
-        </p>
-
-        <p>
-          We bring people together, transcend boundaries, and create moving
-          encounters—voice by voice, heart by heart.
-        </p>
-      </div>
-    </section>
-
-    <!-- Location image -->
-    <div class="mx-auto mt-12 grid max-w-4xl gap-10 md:mt-16">
-      {
-        publishedLocation.map((location) => (
-          <figure class="group mx-auto w-full max-w-xl md:w-3/4">
-            <Picture
-              src={location.data.avatar.src}
-              alt={location.data.avatar.alt}
-              sizes="(max-width: 768px) 100vw, 800px"
-              width={800}
-              height={800}
-              class="
-                block h-auto w-full rounded-xl bg-white
-                object-cover object-center transition
-                group-hover:-translate-y-1
-                group-hover:shadow-xl
-              "
-            />
-
-            <figcaption
-              class="
-                mt-3 text-center text-xs leading-relaxed text-slate-500
-              "
-            >
-              Image by {location.data.attribution.creator}, available from{" "}
-              <a
-                href={location.data.attribution.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="
-                  font-medium text-blue-600 underline
-                  underline-offset-2 hover:text-blue-700
-                "
-              >
-                {location.data.attribution.source}
-              </a>
-            </figcaption>
-          </figure>
-        ))
-      }
-    </div>
-  </Container>
-</Layout>
+      </section>
+    </Container>
+  </Layout>
 </main>
+
+<style>
+  .about-inline-markdown :global(strong),
+  .about-copy :global(strong) {
+    color: var(--page-accent);
+    font-weight: inherit;
+  }
+
+  .about-copy :global(p + p) {
+    margin-top: 1.25rem;
+  }
+
+  .about-copy :global(a) {
+    color: var(--page-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+ 
+  .leadership-card {
+    border: 1px solid
+      color-mix(
+        in srgb,
+        var(--page-accent) 24%,
+        transparent
+      );
+
+    background-color: color-mix(
+      in srgb,
+      var(--page-accent) 5%,
+      transparent
+    );
+  }
+
+  .leadership-card:hover {
+    border-color: color-mix(
+      in srgb,
+      var(--page-accent) 48%,
+      transparent
+    );
+
+    background-color: color-mix(
+      in srgb,
+      var(--page-accent) 9%,
+      transparent
+    );
+  }
+ 
+</style>
