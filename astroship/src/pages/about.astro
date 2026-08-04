@@ -22,9 +22,7 @@ if (!aboutPage || aboutPage.data.pageType !== "about") {
 
 const people = await getCollection(
   "about",
-  ({ data }) =>
-    !data.draft &&
-    data.publishDate < new Date(),
+  ({ data }) => !data.draft,
 );
 
 people.sort((a, b) => {
