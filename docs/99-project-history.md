@@ -14,20 +14,33 @@ To ensure the website remained on supported software before customisation began.
 
 ---
 
-## October 2026
+## Aug 2026
 
+August 2026
+
+Major website implementation
+
+- Created Home page CMS
+- Added About page CMS
+- Added Contact page CMS
+- Added Join page CMS
+- Added Performances archive
+- Added Gallery system
+- Added Leadership section
+- Added accent colour support
+- Added Markdown highlighting
+- Added PDF upload support
+- Added image uploads
+- Added Cloudflare Pages deployment
+- Added custom domain
+- Added GitHub OAuth login
+- Added Cloudflare Worker authentication
+- Added website domain
 - Added Decap CMS.
 
 Reason:
 
-To allow committee members to edit the website without using Git.
+Created initial public version of website and allow core members to edit the website without using Git.
 
 ---
-
-## March 2028
-
-- Upgraded Astro 8.
-
-Reason:
-
-Security and long-term support.
+ 

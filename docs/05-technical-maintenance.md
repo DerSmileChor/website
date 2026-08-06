@@ -3,6 +3,7 @@
 | Version | Date | Author | Notes |
 |---------|------|--------|------|
 | 1.0 | July 2026 | Cindy Cheng | Initial documentation |
+| 2.0 | Aug 2026 | Cindy Cheng | Initial working website |
 
 ## Purpose
 
@@ -20,7 +21,7 @@ The technical maintainer is responsible for:
 
 - keeping software dependencies reasonably up to date
 - ensuring the website continues to build successfully
-- maintaining deployment to GitHub Pages
+- maintaining deployment to Cloudflare Pages
 - maintaining Decap CMS configuration
 - maintaining GitHub repository settings
 - assisting committee members if publishing fails
@@ -193,13 +194,22 @@ Once each year:
 
 □ Review Astro release notes
 
-□ Confirm GitHub Pages still works
+□ Confirm Cloudflare Pages deployment
+
+□ Confirm Cloudflare Worker authentication
+
+□ Confirm GitHub OAuth app still works
 
 □ Confirm Decap CMS login
 
 □ Confirm domain renewal
 
+□ Confirm SSL certificate
+
 □ Confirm administrator accounts
+
+ 
+
 
 Expected time:
 

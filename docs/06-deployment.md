@@ -3,6 +3,7 @@
 | Version | Date | Author | Notes |
 |---------|------|--------|------|
 | 1.0 | July 2026 | Cindy Cheng | Initial documentation |
+| 2.0 | Aug 2026 | Cindy Cheng | Initial working website |
 
 ## Purpose
 
@@ -14,34 +15,32 @@ The intention is that day-to-day content editors never need this document. It is
 
 # Deployment Overview
 
-The website is generated using Astro and published through GitHub Pages.
+The website is generated using Astro and published through Cloudflare Pages.
 
 The publishing process is:
 
 ```
-Developer or CMS Editor
+Decap CMS Editor
         │
         ▼
-Git Repository (main branch)
+GitHub repository
         │
         ▼
-GitHub Actions
+Cloudflare Pages
         │
         ▼
-Astro Build
+Astro build
         │
         ▼
-GitHub Pages
-        │
-        ▼
-Live Website
+dersmilechor.com
 ```
 
 Whenever changes are merged into the `main` branch:
 
+0. Publishing from Decap creates a Git commit, which automatically triggers a Cloudflare Pages deployment.
 1. GitHub starts an automated workflow.
 2. Astro builds the static website.
-3. If the build succeeds, GitHub Pages replaces the live website.
+3. If the build succeeds, Cloudflare Pages replaces the live website.
 4. No manual upload is required.
 
 ---
@@ -86,7 +85,7 @@ GitHub will automatically rebuild the website.
 
 ## Step 1
 
-Open GitHub Actions.
+Open Cloudflare Pages.
 
 Locate the latest workflow.
 
@@ -115,7 +114,7 @@ Check:
 
 - Node version
 - package-lock.json committed
-- GitHub Pages settings
+- Cloudflare settings
 - Repository permissions
 
 ---
@@ -152,8 +151,8 @@ Once each year:
 - Run `npm outdated`
 - Run `npm run build`
 - Review dependency updates
-- Confirm GitHub Pages is still enabled
-- Confirm the domain still points at GitHub Pages
+- Confirm Cloudflare Pages is still enabled
+- Confirm the domain still points at Cloudflare Pages
 - Confirm Decap CMS login still works
 - Review committee access
 

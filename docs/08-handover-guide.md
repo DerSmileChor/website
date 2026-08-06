@@ -56,6 +56,14 @@ npm run build
 
 □ Deploy successfully
 
+□ Log into Decap CMS
+
+□ Publish a test edit
+
+□ Watch Cloudflare deploy
+
+□ Verify website updates
+
 ---
 
 # Content Management

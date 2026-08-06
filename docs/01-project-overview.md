@@ -3,6 +3,7 @@
 | Version | Date | Author | Notes |
 |---------|------|--------|------|
 | 1.0 | July 2026 | Cindy Cheng | Initial documentation |
+| 1.1 | Aug 2026 | Cindy Cheng | Initial working website |
 
 ## Purpose
 
@@ -20,6 +21,8 @@ The objectives of the project are:
 
 The website has been deliberately designed to remain maintainable even if the original developer is no longer involved.
 
+The website is hosted on Cloudflare Pages and automatically rebuilt whenever changes are pushed to the GitHub repository or published through Decap CMS.
+
 ---
 
 # Technology
@@ -30,9 +33,11 @@ The website currently uses:
 |------------|---------|
 | Astro | Static website framework |
 | Tailwind CSS | Styling |
-| Git | Version history |
-| GitHub | Source code and deployment |
-| GitHub Pages | Website hosting |
+| GitHub | Source code & version control
+| GitHub OAuth | CMS authentication
+| Cloudflare Pages | Website hosting
+| Cloudflare Workers | GitHub OAuth authentication for Decap CMS
+| Cloudflare DNS | Domain management
 | Decap CMS | Browser-based content editing |
 
 ---

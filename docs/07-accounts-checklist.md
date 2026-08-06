@@ -3,6 +3,7 @@
 | Version | Date | Author | Notes |
 |---------|------|--------|------|
 | 1.0 | July 2026 | Cindy Cheng | Initial documentation |
+| 2.0 | Aug 2026 | Cindy Cheng | Initial working website |
 
 ## Purpose
 
@@ -18,11 +19,12 @@ Passwords should be kept in the choir's password manager.
 
 | Service | Purpose | Owner | Notes |
 |----------|---------|-------|------|
-| GitHub | Source code | | |
-| Domain Registrar | Domain ownership | | |
-| DNS Provider | DNS records | | |
-| GitHub Pages | Website hosting | | |
+| GitHub | Source code & Repository | dersmilechor@gmail.com | |
+| Github OAuth| Decap authentication| dersmilechor@gmail.com| |
+| Cloudflare | Hosting, DNS, SSL, Workers| dersmilechor@gmail.com | |
 | Decap CMS | Website editing | | |
+| dersmilechor@gmail.com  | Recovery | | |
+
 
 ---
 

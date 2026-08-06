@@ -3,6 +3,7 @@
 | Version | Date | Author | Notes |
 |---------|------|--------|------|
 | 1.0 | July 2026 | Cindy Cheng | Initial documentation |
+| 2.0 | Aug 2026 | Cindy Cheng | Initial working website |
 
 ## Purpose
 
@@ -63,11 +64,11 @@ Home
 
 About
 
+Join Us
+
+Performances
+
 Contact
-
-News
-
-Gallery
 
 ---
 
@@ -75,13 +76,11 @@ Gallery
 
 Markdown content used by the website.
 
-Examples:
+about/ : pictures in the about page
+location/ : picture on where people are from in the about page
+pages/ : content for the about, contact, home, join and performance pages
+performances/ : pictures for the performance gallery
 
-News articles
-
-Blog posts
-
-Concert information
 
 Future content should normally be added here rather than directly inside page files.
 
@@ -141,13 +140,9 @@ Home
 
 About
 
-Join
+Join Us
 
-Concerts
-
-News
-
-Gallery
+Performances
 
 Contact
 

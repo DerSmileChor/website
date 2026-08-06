@@ -6,93 +6,111 @@
 
 ## Purpose
 
-This guide is intended for committee members and other volunteers who update website content.
+This guide explains what should be published on the choir website and how content should be written.
+
+It is intended for committee members and volunteers responsible for maintaining the website.
 
 No programming knowledge is required.
 
-Most editing should take place through Decap CMS.
+Technical instructions for using the website editor are provided in the Decap CMS Guide.
+
+
 
 ---
 
-# Editing Workflow
+## Writing style
 
-1. Sign into Decap CMS.
+Aim for writing that is:
 
-2. Select the content you wish to edit.
+- welcoming
+- concise
+- informative
+- accessible
 
-3. Make changes.
-
-4. Preview the page.
-
-5. Click **Publish**.
-
-The website will update automatically once the changes have been deployed.
+Avoid:
+- unnecessarily long paragraphs
+- excessive formatting
+- CAPITAL LETTERS
+- excessive punctuation
 
 ---
 
-# Types of Content
+## Tone
+The website should feel:
 
-## Static Pages
+- friendly
+- inclusive
+- enthusiastic
+- professional
+
+
+---
+
+##  Static pages
 
 Examples:
 
-About
+- Home
+- About
+- Join Us
+- Contact
 
-Join
-
-Contact
-
-These pages change infrequently.
+These pages change relatively infrequently.
 
 ---
 
-## Concerts
+## Peformance Gallery
 
-Each concert should contain:
+Each galllery should contain pictures from a given season. Each picture should include:
 
 - title
 - date
 - venue
 - time
 - description
-- ticket information (if applicable)
-- poster image
 
----
+Choose photographs that:
 
-## News
+- epresent the choir positively
+- are sharp and well-lit
+- are appropriately cropped
 
-News items should:
-
-- have a clear title
-- include a publication date
-- contain concise text
-- include an image where appropriate
-
----
-
-## Gallery
-
-Upload photographs in landscape orientation where possible.
 
 Compress very large images before uploading.
 
 Avoid uploading photographs larger than necessary.
+---
+
+## About page
+
+Leadership entries should contain:
+- name
+- role
+- optional short biography
+- optional photograph
+
+General choir photographs appear above the leadership section.
 
 ---
 
-# Writing Style
+## Images
 
-Aim for:
+When uploading images:
 
-- clear
-- welcoming
-- concise
-- accessible
+- crop unnecessary borders
+- avoid extremely large files
+- always provide descriptive alternative text
 
-Avoid excessive formatting.
 
-Use headings where appropriate.
+---
+
+## PDFs
+
+Only upload the most recent version.
+
+Replacing a PDF automatically updates website links.
+
+
 
 ---
 
@@ -102,11 +120,13 @@ Check:
 
 ✓ spelling
 
+✓ grammar
+
 ✓ dates
 
-✓ venue names
+✓ links
 
-✓ ticket links
+✓ venue names
 
 ✓ images display correctly
 
