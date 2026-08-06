@@ -9,6 +9,8 @@ backend:
   auth_endpoint: "auth"
   site_domain: "dersmilechor.com"
   squash_merges: true
+  preview_context: "Cloudflare Pages"
+
 
 media_folder: "astroship/src/assets/uploads"
 public_folder: "../../assets/uploads"
