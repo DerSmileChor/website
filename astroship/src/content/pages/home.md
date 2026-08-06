@@ -4,11 +4,15 @@ accent: "#4057e3"
 title: Der Smile Chor
 hero:
   heading: Der Smile Chor
-  description: "Der Smile Chor is an amateur English-language choir driven by the
-    conviction that music can open hearts and bring people together. Through
-    popular songs which everyone can hum or sing along to, we aim to put a smile
-    on people's faces precisely where it is needed most: care homes for the
-    elderly, refugee shelters, and hospitals. "
+  description: >-
+    Der Smile Chor is an amateur English-language choir driven by the conviction
+    that music can open hearts and bring people together. Through popular songs
+    which everyone can hum or sing along to, we aim to put a smile on people's
+    faces precisely where it is needed most: care homes for the elderly, refugee
+    shelters, and hospitals. 
+
+
+    Test
   videoId: axlaeY91HDw
   videoTitle: Der Smile Chor performance
 featuresIntro:
