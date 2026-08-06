@@ -1,8 +1,12 @@
 local_backend: true
 
 backend:
-  name: "git-gateway"
+  name: "github"
+  repo: "DerSmileChor/website"
   branch: "main"
+  base_url: "https://dersmilechor-cms-auth.dersmilechor.workers.dev"
+  auth_endpoint: "auth"
+  site_domain: "dersmilechor.com"
 
 media_folder: "astroship/src/assets/uploads"
 public_folder: "../../assets/uploads"
