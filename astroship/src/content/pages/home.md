@@ -8,7 +8,7 @@ hero:
     conviction that music can open hearts and bring people together. Through
     popular songs which everyone can hum or sing along to, we aim to put a smile
     on people's faces precisely where it is needed most: care homes for the
-    elderly, refugee shelters, and hospitals. "
+    elderly, refugee shelters, and hospitals.  test"
   videoId: axlaeY91HDw
   videoTitle: Der Smile Chor performance
 featuresIntro:
