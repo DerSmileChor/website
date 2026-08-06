@@ -3,6 +3,7 @@
 | Version | Date | Author | Notes |
 |---------|------|--------|------|
 | 1.0 | July 2026 | Cindy Cheng | Initial documentation |
+| 2.0 | Aug 2026 | Cindy Cheng | Initial working website |
 
 ## Purpose
 
@@ -19,6 +20,7 @@ Before starting, install:
 - Node.js (version 22 or later)
 - npm (included with Node.js)
 - Git
+- A Github account
 
 ---
 
@@ -27,7 +29,7 @@ Before starting, install:
 Clone the repository.
 
 ```
-git clone <repository>
+git clone https://github.com/DerSmileChor/website.git
 ```
 
 Enter the project directory.
