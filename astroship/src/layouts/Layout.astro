@@ -9,6 +9,7 @@ import "../styles/global.css";
 
 export interface Props {
   title: string;
+  description?: string;
   accent?: string;
 }
 
@@ -22,6 +23,7 @@ const resolvedImageWithDomain = new URL(
 
 const {
   title,
+  description = "An international choir based in Munich, bringing people together through music.",
   accent = "var(--accent-home)",
 } = Astro.props;
 
@@ -42,9 +44,9 @@ const makeTitle = title
     <meta name="color-scheme" content="light" />
 
     <!-- <link rel="preload" as="image" href={src} alt="Hero" /> -->
-   <SEO
+<SEO
   title={makeTitle}
-  description="An international choir based in Munich, bringing people together through music."
+  description={description}
   canonical={canonicalURL}
   twitter={{
     card: "summary_large_image",
@@ -53,7 +55,7 @@ const makeTitle = title
     basic: {
       url: canonicalURL,
       type: "website",
-      title: "Der Smile Chor — Building Community through Music",
+      title: makeTitle,
       image: resolvedImageWithDomain,
     },
     image: {
