@@ -5,8 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import icon from "astro-icon";
 
 export default defineConfig({
-  site: "https://der-smile-chor-preview.cindyyawencheng.workers.dev",
-
+  site: "https://dersmilechor.com",
   integrations: [mdx(), sitemap(), icon()],
 
   vite: {
