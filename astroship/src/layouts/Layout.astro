@@ -16,7 +16,7 @@ export interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
 const resolvedImageWithDomain = new URL(
-  "/logo1.png",
+  "/og-image.png",
   Astro.site
 ).toString();
 
@@ -51,18 +51,25 @@ const makeTitle = title
   twitter={{
     card: "summary_large_image",
   }}
-  openGraph={{
-    basic: {
-      url: canonicalURL,
-      type: "website",
-      title: makeTitle,
-      image: resolvedImageWithDomain,
-    },
-    image: {
-      alt: "Der Smile Chor",
-      type: "image/png",
-    },
-  }}
+openGraph={{
+  basic: {
+    url: canonicalURL,
+    type: "website",
+    title: makeTitle,
+    image: resolvedImageWithDomain,
+  },
+
+  optional: {
+    description:
+      "An international choir based in Munich, bringing people together through music.",
+    siteName: "Der Smile Chor",
+  },
+
+  image: {
+    alt: "Der Smile Chor",
+    type: "image/png",
+  },
+}}
 />
   </head>
    <body style={`--page-accent: ${accent};`}>
