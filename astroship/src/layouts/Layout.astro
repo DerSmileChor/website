@@ -16,7 +16,7 @@ export interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString();
 
 const resolvedImageWithDomain = new URL(
-  "/og-image.png",
+  "/og-image.jpg",
   Astro.site
 ).toString();
 
@@ -67,7 +67,7 @@ openGraph={{
 
   image: {
     alt: "Der Smile Chor",
-    type: "image/png",
+    type: "image/jpg",
     width: 1200,
     height: 630,
   },
